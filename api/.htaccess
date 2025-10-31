@@ -1,0 +1,64 @@
+# Configurazione Sicurezza API SweetyLab
+
+# Abilita riscrittura URL
+RewriteEngine On
+
+# Blocca accesso diretto ai file di configurazione
+<Files "*.php">
+    <RequireAll>
+        Require all granted
+    </RequireAll>
+</Files>
+
+# Proteggi file sensibili
+<FilesMatch "\.(env|log|ini|conf)$">
+    Require all denied
+</FilesMatch>
+
+# Proteggi directory temp
+<Directory "temp">
+    Require all denied
+</Directory>
+
+# Headers di sicurezza
+<IfModule mod_headers.c>
+    # Previeni XSS
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Sicurezza HTTPS (se disponibile)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Limita dimensione upload
+LimitRequestBody 1048576  # 1MB
+
+# Timeout richieste
+TimeOut 30
+
+# Comprimi risposte JSON
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+# Cache per risorse statiche (se presenti)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# Blocca user agent sospetti
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} (bot|crawler|spider) [NC]
+    RewriteRule ^endpoints/ - [F,L]
+</IfModule>
+
+# Log errori personalizzato (opzionale)
+# ErrorLog logs/sweetylab_api_error.log
+# CustomLog logs/sweetylab_api_access.log combined
