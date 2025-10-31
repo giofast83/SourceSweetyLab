@@ -1,30 +1,96 @@
-import { useState } from 'react';
-import { Mail, Phone, MapPin, Instagram, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Instagram, Send, AlertCircle, CheckCircle } from 'lucide-react';
+import { submitContactForm, validateContactForm, ApiError, type ContactFormData } from '../utils/api';
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  message?: string;
+}
 
 function Contact() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     phone: '',
     message: ''
   });
-
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    }, 3000);
+    
+    // Reset stati precedenti
+    setErrors({});
+    setSubmitMessage('');
+    
+    // Validazione lato client
+    const validationErrors = validateContactForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setSubmitMessage('Correggi gli errori nel form prima di inviare');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await submitContactForm(formData);
+
+      if (result.success) {
+        setSubmitted(true);
+        setSubmitMessage('Grazie! La tua richiesta è stata inviata con successo. Ti contatteremo presto!');
+        
+        // Reset form dopo successo
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+
+        // Reset stato dopo 5 secondi
+        setTimeout(() => {
+          setSubmitted(false);
+          setSubmitMessage('');
+        }, 5000);
+      }
+
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.errors) {
+          setErrors(error.errors);
+        }
+        setSubmitMessage(error.message);
+      } else {
+        console.error('Errore imprevisto:', error);
+        setSubmitMessage('Si è verificato un errore imprevisto. Riprova più tardi.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    // Rimuovi errore del campo quando l'utente inizia a digitare
+    if (errors[name as keyof FormErrors]) {
+      setErrors({
+        ...errors,
+        [name]: undefined
+      });
+    }
   };
 
   return (
@@ -43,9 +109,25 @@ function Contact() {
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Messaggio di stato */}
+              {submitMessage && (
+                <div className={`p-4 rounded-lg flex items-center gap-3 ${
+                  submitted 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {submitted ? (
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  )}
+                  <span className="text-sm font-medium">{submitMessage}</span>
+                </div>
+              )}
+
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Nome
+                  Nome completo *
                 </label>
                 <input
                   type="text"
@@ -54,14 +136,23 @@ function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
-                  placeholder="Il tuo nome"
+                  disabled={isSubmitting}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
+                  placeholder="Il tuo nome e cognome"
                 />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
+                  Email *
                 </label>
                 <input
                   type="email"
@@ -70,9 +161,18 @@ function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
-                  placeholder="tua@email.com"
+                  disabled={isSubmitting}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
+                  placeholder="la-tua-email@esempio.com"
                 />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -85,15 +185,23 @@ function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
-                  placeholder="+39 xxx xxx xxxx"
+                  disabled={isSubmitting}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
+                  placeholder="347 123 4567"
                 />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.phone}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Messaggio
+                  Messaggio *
                 </label>
                 <textarea
                   id="message"
@@ -102,18 +210,35 @@ function Contact() {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all resize-none"
+                  disabled={isSubmitting}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.message ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
                   placeholder="Raccontaci del tuo giorno speciale..."
                 ></textarea>
+                {errors.message && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.message}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
-                disabled={submitted}
-                className="w-full px-8 py-4 bg-rose-500 text-white rounded-full text-lg font-medium hover:bg-rose-600 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={isSubmitting || submitted}
+                className="w-full px-8 py-4 bg-rose-500 text-white rounded-full text-lg font-medium hover:bg-rose-600 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {submitted ? (
-                  'Richiesta inviata!'
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Invio in corso...
+                  </>
+                ) : submitted ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    Richiesta inviata!
+                  </>
                 ) : (
                   <>
                     <Send className="w-5 h-5" />
