@@ -2,12 +2,12 @@ import { Heart, Instagram, Facebook } from 'lucide-react';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gradient-to-br from-gray-900 to-pink-50 text-white py-16">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Heart className="w-6 h-6 text-rose-400" fill="currentColor" />
+              <Heart className="w-6 h-6 text-pink-500" fill="currentColor" />
               <h3 className="text-2xl font-serif">SweetyLab</h3>
             </div>
             <p className="text-gray-400 leading-relaxed">
@@ -37,13 +37,13 @@ function Footer() {
             <div className="flex gap-4">
               <a
                 href="#"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-rose-500 transition-colors"
+                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-rose-500 transition-colors"
+                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>

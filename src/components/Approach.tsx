@@ -28,13 +28,13 @@ function Approach() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-rose-50 via-white to-amber-50">
+    <section className="py-24 bg-gradient-to-br from-pink-50 via-white to-amber-50">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Il nostro metodo
           </h2>
-          <div className="w-24 h-1 bg-rose-400 mx-auto mb-8"></div>
+          <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Un percorso pensato per rendere unico e sereno ogni momento
           </p>
@@ -48,8 +48,8 @@ function Approach() {
                 key={index}
                 className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
               >
-                <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                  <Icon className="w-8 h-8 text-rose-500" strokeWidth={1.5} />
+                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+              <Icon className="w-8 h-8 text-pink-600" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 text-center">
                   {step.title}

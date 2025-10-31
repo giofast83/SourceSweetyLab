@@ -100,7 +100,7 @@ function Contact() {
           <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Prenota la tua consulenza oggi
           </h2>
-          <div className="w-24 h-1 bg-rose-400 mx-auto mb-8"></div>
+          <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Contattaci per iniziare il viaggio verso il tuo abito da sogno
           </p>
@@ -137,7 +137,7 @@ function Contact() {
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                   placeholder="Il tuo nome e cognome"
@@ -162,7 +162,7 @@ function Contact() {
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                   placeholder="la-tua-email@esempio.com"
@@ -186,7 +186,7 @@ function Contact() {
                   value={formData.phone}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                   placeholder="347 123 4567"
@@ -211,7 +211,7 @@ function Contact() {
                   required
                   rows={4}
                   disabled={isSubmitting}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.message ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                   placeholder="Raccontaci del tuo giorno speciale..."
@@ -227,7 +227,7 @@ function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting || submitted}
-                className="w-full px-8 py-4 bg-rose-500 text-white rounded-full text-lg font-medium hover:bg-rose-600 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-8 py-4 bg-pink-600 text-white rounded-full text-lg font-medium hover:bg-pink-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
@@ -250,7 +250,7 @@ function Contact() {
           </div>
 
           <div className="space-y-8">
-            <div className="bg-gradient-to-br from-rose-50 to-amber-50 rounded-xl p-8">
+            <div className="bg-gradient-to-br from-pink-50 to-amber-50 rounded-xl p-8">
               <h3 className="text-2xl font-serif text-gray-800 mb-6">
                 Informazioni di contatto
               </h3>
@@ -258,7 +258,7 @@ function Contact() {
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-rose-500" />
+                    <MapPin className="w-5 h-5 text-pink-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">SweetyLab</p>
@@ -268,7 +268,7 @@ function Contact() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-rose-500" />
+                    <Phone className="w-5 h-5 text-pink-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Telefono</p>
@@ -278,7 +278,7 @@ function Contact() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-rose-500" />
+                    <Mail className="w-5 h-5 text-pink-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Email</p>
@@ -288,7 +288,7 @@ function Contact() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                    <Instagram className="w-5 h-5 text-rose-500" />
+                    <Instagram className="w-5 h-5 text-pink-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Social</p>
@@ -298,7 +298,7 @@ function Contact() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-amber-50 to-rose-50 rounded-xl p-8">
+            <div className="bg-gradient-to-br from-amber-50 to-pink-50 rounded-xl p-8">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 Orari di apertura
               </h3>

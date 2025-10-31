@@ -20,13 +20,13 @@ function Testimonials() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-rose-50 via-white to-amber-50">
+    <section className="py-24 bg-gradient-to-br from-pink-50 via-white to-amber-50">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Le parole delle nostre spose
           </h2>
-          <div className="w-24 h-1 bg-rose-400 mx-auto mb-8"></div>
+          <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -35,8 +35,8 @@ function Testimonials() {
               key={index}
               className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all"
             >
-              <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mb-6">
-                <Quote className="w-6 h-6 text-rose-500" strokeWidth={1.5} />
+              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-6">
+              <Quote className="w-6 h-6 text-pink-600" strokeWidth={1.5} />
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed italic">
                 "{testimonial.text}"

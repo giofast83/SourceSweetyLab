@@ -50,7 +50,7 @@ function Portfolio() {
           <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Le nostre creazioni
           </h2>
-          <div className="w-24 h-1 bg-rose-400 mx-auto mb-8"></div>
+          <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Ogni abito racconta una storia unica
           </p>

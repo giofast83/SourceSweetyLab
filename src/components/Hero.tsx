@@ -11,26 +11,26 @@ function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <img
-          src={heroBg}
-          alt="Sposa elegante in abito bianco"
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-      </div>
-
+    <section 
+      className="relative h-screen flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: `url(${heroBg})`,
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover'
+      }}
+    >
       <div className="absolute inset-0 bg-white/50 z-5"></div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <div className="flex justify-center mb-6">
-          <Sparkles className="w-12 h-12 text-rose-400" strokeWidth={1.5} />
+          <Sparkles className="w-12 h-12 text-pink-500" strokeWidth={1.5} />
         </div>
 
         <h1 className="font-serif text-5xl md:text-7xl text-gray-800 mb-6 leading-tight">
           Il tuo abito da sogno,<br />
-          <span className="text-rose-600">creato su misura per te</span>
+          <span className="text-pink-700">creato su misura per te</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
@@ -40,7 +40,7 @@ function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={scrollToContact}
-            className="group px-8 py-4 bg-rose-500 text-white rounded-full text-lg font-medium hover:bg-rose-600 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+            className="group px-8 py-4 bg-pink-600 text-white rounded-full text-lg font-medium hover:bg-pink-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             Prenota la tua consulenza
