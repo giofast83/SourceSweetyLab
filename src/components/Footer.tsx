@@ -2,9 +2,9 @@ import { Heart, Instagram, Facebook } from 'lucide-react';
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-pink-50 text-white py-16">
+    <footer className="bg-gray-800 text-white py-20">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Heart className="w-6 h-6 text-pink-500" fill="currentColor" />
@@ -37,13 +37,13 @@ function Footer() {
             <div className="flex gap-4">
               <a
                 href="#"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
+                className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors duration-300"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
+                className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors duration-300"
               >
                 <Facebook className="w-5 h-5" />
               </a>
@@ -51,7 +51,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-gray-600 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
             © 2025 SweetyLab – Tutti i diritti riservati
           </p>

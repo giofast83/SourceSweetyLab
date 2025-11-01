@@ -1,26 +1,29 @@
 import { Calendar, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import heroBg from '../assets/pexels-zvolskiy-1676133.jpg';
 
 function Hero() {
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  const navigate = useNavigate();
+
+  const goToContact = () => {
+    navigate('/contatti');
   };
 
-  const scrollToPortfolio = () => {
-    document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+  const goToPortfolio = () => {
+    navigate('/portfolio');
   };
 
   return (
-    <section 
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{
-        backgroundImage: `url(${heroBg})`,
-        backgroundAttachment: 'fixed',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
-      }}
-    >
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* Immagine con effetto Ken Burns */}
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={heroBg}
+          alt="Hero background"
+          className="w-full h-full object-cover animate-ken-burns"
+        />
+      </div>
+      
       <div className="absolute inset-0 bg-white/50 z-5"></div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
@@ -39,7 +42,7 @@ function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={scrollToContact}
+            onClick={goToContact}
             className="group px-8 py-4 bg-pink-600 text-white rounded-full text-lg font-medium hover:bg-pink-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
           >
             <Calendar className="w-5 h-5" />
@@ -47,7 +50,7 @@ function Hero() {
           </button>
 
           <button
-            onClick={scrollToPortfolio}
+            onClick={goToPortfolio}
             className="px-8 py-4 bg-white text-gray-700 rounded-full text-lg font-medium hover:bg-gray-50 transition-all border-2 border-gray-200"
           >
             Scopri il nostro portfolio
