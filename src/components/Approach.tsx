@@ -3,7 +3,11 @@ import tessutiPregiatiImg from '../assets/tessuti-pregiati-1024.jpg';
 import dettagliArtigianaliImg from '../assets/dettagli-artigianali-1024.jpg';
 import atelierInAzioneImg from '../assets/atelier-in-azione-1024.jpg';
 
-function Approach() {
+type ApproachProps = {
+  showImages?: boolean; // controlla la visualizzazione dei tre rettangoli/foto finali
+};
+
+function Approach({ showImages = true }: ApproachProps) {
   const steps = [
     {
       icon: MessageCircle,
@@ -62,31 +66,33 @@ function Approach() {
           })}
         </div>
 
-        <div className="mt-16 bg-white rounded-2xl shadow-xl p-8 md:p-12">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div className="aspect-video rounded-lg overflow-hidden relative">
-              <img
-                src={tessutiPregiatiImg}
-                alt="Tessuti pregiati di alta qualità"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="aspect-video rounded-lg overflow-hidden relative">
-              <img
-                src={dettagliArtigianaliImg}
-                alt="Dettagli artigianali"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="aspect-video rounded-lg overflow-hidden relative">
-              <img
-                src={atelierInAzioneImg}
-                alt="Atelier in azione"
-                className="w-full h-full object-cover"
-              />
+        {showImages && (
+          <div className="mt-16 bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div className="aspect-video rounded-lg overflow-hidden relative">
+                <img
+                  src={tessutiPregiatiImg}
+                  alt="Tessuti pregiati di alta qualità"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="aspect-video rounded-lg overflow-hidden relative">
+                <img
+                  src={dettagliArtigianaliImg}
+                  alt="Dettagli artigianali"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="aspect-video rounded-lg overflow-hidden relative">
+                <img
+                  src={atelierInAzioneImg}
+                  alt="Atelier in azione"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
