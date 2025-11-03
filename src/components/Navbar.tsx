@@ -31,13 +31,20 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 fixed w-full top-0 z-50 transition-all duration-300">
+    <nav
+      className={`${onHome && !hasScrolled
+        ? 'bg-transparent backdrop-blur-0 shadow-none border-transparent'
+        : 'bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20'
+      } fixed w-full top-0 z-50 transition-all duration-300`}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center h-20">
+        <div
+          className={`flex justify-between items-center h-20 ${onHome && !hasScrolled ? 'md:opacity-0 md:pointer-events-none' : 'md:opacity-100 md:pointer-events-auto'}`}
+        >
           {/* Logo */}
           <Link
             to="/"
-            className={`flex items-center gap-1 sm:gap-2 group transition-all duration-300 hover:scale-105 ${onHome && !hasScrolled ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}
+            className={`${onHome && !hasScrolled ? 'hidden md:flex' : 'flex'} items-center gap-1 sm:gap-2 group transition-all duration-300 hover:scale-105`}
           >
             <img
               src={logoSweetyLab}
@@ -47,7 +54,7 @@ function Navbar() {
             />
           </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu (sempre visibile su desktop) */}
           <div className="hidden md:flex items-center space-x-2">
             {navigation.map((item) => (
               <Link
@@ -67,11 +74,11 @@ function Navbar() {
             ))}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Burger menu: visibile solo su mobile, posizionato a destra */}
+          <div className="md:hidden ml-auto">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-700 hover:text-pink-600 focus:outline-none focus:text-pink-600 transition-all duration-300 hover:bg-pink-50/80 rounded-full hover:scale-110"
+              className="p-2 text-pink-600 hover:text-pink-700 focus:outline-none focus:text-pink-700 transition-all duration-300 hover:bg-pink-50/80 rounded-full hover:scale-110"
             >
               <div className="relative w-6 h-6">
                 <Menu className={`w-6 h-6 absolute transition-all duration-300 ${isMenuOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`} />
@@ -85,7 +92,7 @@ function Navbar() {
         <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="px-2 pt-2 pb-3 space-y-2 bg-white/90 backdrop-blur-sm border-t border-pink-100 rounded-b-2xl shadow-xl">
+          <div className="px-2 pt-2 pb-3 space-y-2 bg-white/90 backdrop-blur-sm border-t border-pink-100 rounded-2xl shadow-xl">
             {navigation.map((item, index) => (
               <Link
                 key={item.name}
