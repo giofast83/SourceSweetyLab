@@ -1,7 +1,7 @@
 import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import heroBg from '../assets/pexels-zvolskiy-1676133.jpg';
+import heroBg from '../assets/preparativi-sposa-1024.jpg';
 import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 function Hero() {
