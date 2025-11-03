@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import creazione01Img from '../assets/creazione-01-1024.jpg';
-import creazione02Img from '../assets/creazione-02-1024.jpg';
-import creazione03Img from '../assets/creazione-03-1024.jpg';
 import creazione04Img from '../assets/creazione-04-1024.jpg';
 import creazione05Img from '../assets/creazione-05-1024.jpg';
 import creazione06Img from '../assets/creazione-06-1024.jpg';
@@ -13,22 +10,8 @@ import creazione09Img from '../assets/creazione-09-1024.jpg';
 function Portfolio() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+  // Disattivate le prime tre foto (creazione 01-03) dal portfolio, senza eliminare i file
   const items = [
-    {
-      title: 'Abito romantico in pizzo francese',
-      description: 'Delicato e sofisticato, con dettagli floreali',
-      image: creazione01Img
-    },
-    {
-      title: 'Abito sartoriale con dettagli artigianali',
-      description: 'Eleganza classica con ricami personalizzati',
-      image: creazione02Img
-    },
-    {
-      title: 'Abito principesco con strascico',
-      description: 'Per una sposa che sogna la favola',
-      image: creazione03Img
-    },
     {
       title: 'Abito contemporaneo con taglio sartoriale',
       description: 'Linee moderne e silhouette elegante',

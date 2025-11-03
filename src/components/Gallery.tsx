@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import creazione01Img from '../assets/creazione-01-1024.jpg';
-import creazione02Img from '../assets/creazione-02-1024.jpg';
-import creazione03Img from '../assets/creazione-03-1024.jpg';
 import creazione04Img from '../assets/creazione-04-1024.jpg';
 import creazione05Img from '../assets/creazione-05-1024.jpg';
 import creazione06Img from '../assets/creazione-06-1024.jpg';
@@ -22,10 +19,8 @@ function Gallery({
   titleVariant = 'visible',
   subtleDivider = true,
 }: GalleryProps) {
+  // Disattivate le prime tre foto (creazione 01-03) dalla gallery, senza eliminare i file
   const images = [
-    { src: creazione01Img, alt: 'Abito romantico in pizzo francese' },
-    { src: creazione02Img, alt: 'Abito sartoriale con dettagli artigianali' },
-    { src: creazione03Img, alt: 'Abito principesco con strascico' },
     { src: creazione07Img, alt: 'Abito contemporaneo con taglio sartoriale' },
     { src: creazione04Img, alt: 'Abito bohémien con trasparenze' },
     { src: creazione08Img, alt: 'Abito elegante con dettagli moderni' },
