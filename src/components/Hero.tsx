@@ -1,9 +1,21 @@
-import { Calendar, Sparkles } from 'lucide-react';
+import { Calendar } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroBg from '../assets/pexels-zvolskiy-1676133.jpg';
+import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 function Hero() {
   const navigate = useNavigate();
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const goToContact = () => {
     navigate('/contatti');
@@ -14,7 +26,7 @@ function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-0">
       {/* Immagine con effetto Ken Burns */}
       <div className="absolute inset-0 overflow-hidden">
         <img
@@ -26,20 +38,33 @@ function Hero() {
       
       <div className="absolute inset-0 bg-white/50 z-5"></div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        <div className="flex justify-center mb-6">
-          <Sparkles className="w-12 h-12 text-pink-500" strokeWidth={1.5} />
+      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center space-y-4 md:space-y-6 -mt-4 md:mt-0">
+        {/* Logo in alto, senza eccessivo spazio */}
+        <div className="flex justify-center">
+          {/* Manteniamo spazio fisso per evitare salto del titolo */}
+          <div className="h-24 flex items-center justify-center">
+            <img
+              src={logoSweetyLab}
+              alt="SweetyLab Logo"
+              className={`h-24 w-auto object-contain drop-shadow-md transition-all duration-300 ${hasScrolled ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+              // Approssimazione colore rosa simile al titolo (pink-700)
+              style={{ filter: 'invert(18%) sepia(71%) saturate(4571%) hue-rotate(313deg) brightness(95%) contrast(98%)' }}
+            />
+          </div>
+        </div>
+        {/* Titolo e descrizione */}
+        <div className="mt-0">
+          <h1 className="font-serif h1-responsive md:text-7xl text-gray-800 mb-6 leading-tight tracking-tight max-w-[24ch] mx-auto md:max-w-none">
+            <span className="block">Il tuo abito da sogno,</span>
+            <span className="block text-pink-700">creato su misura per te</span>
+          </h1>
+
+          <p className="text-xl md:text-2xl text-gray-700 mb-4 md:mb-8 max-w-3xl mx-auto font-light leading-relaxed">
+            Eleonora e Veronica ti guidano con cura e professionalità in ogni dettaglio del tuo giorno speciale.
+          </p>
         </div>
 
-        <h1 className="font-serif text-5xl md:text-7xl text-gray-800 mb-6 leading-tight">
-          Il tuo abito da sogno,<br />
-          <span className="text-pink-700">creato su misura per te</span>
-        </h1>
-
-        <p className="text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-          Eleonora e Veronica ti guidano con cura e professionalità in ogni dettaglio del tuo giorno speciale.
-        </p>
-
+        {/* CTA, immediatamente sotto la descrizione */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={goToContact}
@@ -58,7 +83,8 @@ function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      {/* Indicatore di scroll (mouse) visibile solo su desktop */}
+      <div className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-soft-bounce">
         <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center pt-2">
           <div className="w-1 h-2 bg-gray-600 rounded-full"></div>
         </div>

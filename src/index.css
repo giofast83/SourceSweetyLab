@@ -99,4 +99,24 @@
     flex-shrink: 0; /* ogni immagine occupa esattamente il 100% della larghezza del contenitore */
     width: 100%;
   }
+
+  /* Indicatore scroll (mouse) con rimbalzo leggero, per evitare clipping su mobile */
+  @keyframes soft-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  .animate-soft-bounce {
+    animation: soft-bounce 1.5s ease-in-out infinite;
+  }
+
+  /* Tipografia H1 responsive con clamp: più controllata su mobile */
+  .h1-responsive {
+    font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
 }

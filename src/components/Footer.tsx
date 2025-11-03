@@ -1,4 +1,5 @@
-import { Heart, Instagram, Facebook } from 'lucide-react';
+import { Instagram, Facebook } from 'lucide-react';
+import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 function Footer() {
   return (
@@ -7,8 +8,12 @@ function Footer() {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Heart className="w-6 h-6 text-pink-500" fill="currentColor" />
-              <h3 className="text-2xl font-serif">SweetyLab</h3>
+              <img
+                src={logoSweetyLab}
+                alt="SweetyLab Logo"
+                className="h-16 w-auto object-contain"
+                style={{ filter: 'invert(18%) sepia(71%) saturate(4571%) hue-rotate(313deg) brightness(95%) contrast(98%) drop-shadow(0 2px 6px rgba(255,255,255,0.15))' }}
+              />
             </div>
             <p className="text-gray-400 leading-relaxed">
               Atelier di abiti da sposa su misura. Creiamo il tuo sogno con passione e professionalità.

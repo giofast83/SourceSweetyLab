@@ -97,9 +97,9 @@ function Contact() {
     <section id="contact" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
+          <h1 className="font-serif h1-responsive md:text-5xl text-gray-800 mb-6 tracking-tight leading-tight max-w-[24ch] mx-auto md:max-w-none">
             Prenota la tua consulenza oggi
-          </h2>
+          </h1>
           <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Contattaci per iniziare il viaggio verso il tuo abito da sogno

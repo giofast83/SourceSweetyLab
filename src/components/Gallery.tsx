@@ -73,15 +73,12 @@ function Gallery({
         <div className="px-4 sm:px-6 max-w-screen-xl mx-auto pt-14 sm:pt-16">
           {titleVariant === 'visible' && (
             <>
-              <h2 className="text-center text-gray-800 font-serif text-2xl sm:text-3xl tracking-wide">
+              <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6 text-center">
                 {title}
               </h2>
               {subtleDivider && (
-                <div className="mx-auto mt-2 h-[2px] w-16 sm:w-20 bg-pink-500" aria-hidden="true" />
+                <div className="w-24 h-1 bg-pink-500 mx-auto mb-8" aria-hidden="true"></div>
               )}
-              <p className="text-center text-sm sm:text-base text-gray-600 mt-2">
-                Ogni abito racconta una storia unica.
-              </p>
             </>
           )}
           {titleVariant === 'sr-only' && (

@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const onHome = location.pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -20,12 +32,19 @@ function Navbar() {
 
   return (
     <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 fixed w-full top-0 z-50 transition-all duration-300">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group transition-all duration-300 hover:scale-105">
-            <Heart className="w-6 h-6 text-pink-500 transition-all duration-300 group-hover:text-pink-600 group-hover:scale-110" fill="currentColor" />
-            <span className="text-2xl font-serif text-gray-800 transition-all duration-300 group-hover:text-pink-700">SweetyLab</span>
+          <Link
+            to="/"
+            className={`flex items-center gap-1 sm:gap-2 group transition-all duration-300 hover:scale-105 ${onHome && !hasScrolled ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}
+          >
+            <img
+              src={logoSweetyLab}
+              alt="SweetyLab Logo"
+              className="h-16 w-auto object-contain"
+              style={{ filter: 'invert(18%) sepia(71%) saturate(4571%) hue-rotate(313deg) brightness(95%) contrast(98%)' }}
+            />
           </Link>
 
           {/* Desktop Menu */}
