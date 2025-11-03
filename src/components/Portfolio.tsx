@@ -6,6 +6,9 @@ import creazione03Img from '../assets/creazione-03-1024.jpg';
 import creazione04Img from '../assets/creazione-04-1024.jpg';
 import creazione05Img from '../assets/creazione-05-1024.jpg';
 import creazione06Img from '../assets/creazione-06-1024.jpg';
+import creazione07Img from '../assets/creazione-07-1024.jpg';
+import creazione08Img from '../assets/creazione-08-1024.jpg';
+import creazione09Img from '../assets/creazione-09-1024.jpg';
 
 function Portfolio() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -27,14 +30,29 @@ function Portfolio() {
       image: creazione03Img
     },
     {
+      title: 'Abito contemporaneo con taglio sartoriale',
+      description: 'Linee moderne e silhouette elegante',
+      image: creazione07Img
+    },
+    {
       title: 'Abito bohémien con trasparenze',
       description: 'Leggerezza e raffinatezza per stili moderni',
       image: creazione04Img
     },
     {
+      title: 'Abito elegante con dettagli moderni',
+      description: 'Raffinatezza contemporanea e cura dei particolari',
+      image: creazione08Img
+    },
+    {
       title: 'Abito minimal con linee pure',
       description: 'Essenziale ed elegante, senza tempo',
       image: creazione05Img
+    },
+    {
+      title: 'Abito sofisticato con texture pregiate',
+      description: 'Materiali di qualità e finiture artigianali',
+      image: creazione09Img
     },
     {
       title: 'Abito vintage con perline',

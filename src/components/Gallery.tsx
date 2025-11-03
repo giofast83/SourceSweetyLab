@@ -5,6 +5,9 @@ import creazione03Img from '../assets/creazione-03-1024.jpg';
 import creazione04Img from '../assets/creazione-04-1024.jpg';
 import creazione05Img from '../assets/creazione-05-1024.jpg';
 import creazione06Img from '../assets/creazione-06-1024.jpg';
+import creazione07Img from '../assets/creazione-07-1024.jpg';
+import creazione08Img from '../assets/creazione-08-1024.jpg';
+import creazione09Img from '../assets/creazione-09-1024.jpg';
 
 type TitleVariant = 'visible' | 'sr-only' | 'pill';
 
@@ -23,8 +26,11 @@ function Gallery({
     { src: creazione01Img, alt: 'Abito romantico in pizzo francese' },
     { src: creazione02Img, alt: 'Abito sartoriale con dettagli artigianali' },
     { src: creazione03Img, alt: 'Abito principesco con strascico' },
+    { src: creazione07Img, alt: 'Abito contemporaneo con taglio sartoriale' },
     { src: creazione04Img, alt: 'Abito bohémien con trasparenze' },
+    { src: creazione08Img, alt: 'Abito elegante con dettagli moderni' },
     { src: creazione05Img, alt: 'Abito minimal con linee pure' },
+    { src: creazione09Img, alt: 'Abito sofisticato con texture pregiate' },
     { src: creazione06Img, alt: 'Abito vintage con perline' },
   ];
 
