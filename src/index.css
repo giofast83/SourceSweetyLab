@@ -57,4 +57,46 @@
   .animate-ken-burns {
     animation: ken-burns 8s ease-out infinite alternate;
   }
+
+  /* Galleria autoscorrevole (marquee) */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Nuove classi per controllo preciso della marquee */
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .marquee-track {
+    flex-wrap: nowrap; /* forza una sola riga, evita il ritorno a capo */
+    animation: marquee 60s linear infinite; /* velocità ridotta (più lenta) */
+    will-change: transform;
+  }
+  .marquee-container:hover .marquee-track {
+    animation-play-state: paused; /* pausa al passaggio del mouse */
+  }
+
+  /* Slider mobile: scorrimento una foto alla volta */
+  .mobile-slider {
+    width: 100%;
+    overflow: hidden;
+  }
+  .mobile-slider-track {
+    display: flex;
+    will-change: transform;
+    transition: transform 800ms ease;
+  }
+  .mobile-slider-track.no-transition {
+    transition: none;
+  }
+  .mobile-slider-track > img {
+    flex-shrink: 0; /* ogni immagine occupa esattamente il 100% della larghezza del contenitore */
+    width: 100%;
+  }
 }
