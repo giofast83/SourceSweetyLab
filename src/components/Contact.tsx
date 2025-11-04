@@ -44,7 +44,7 @@ function Contact() {
 
       if (result.success) {
         setSubmitted(true);
-        setSubmitMessage('Grazie! La tua richiesta è stata inviata con successo. Ti contatteremo presto!');
+        setSubmitMessage('Grazie! La tua richiesta è stata inviata con successo. Ti risponderemo entro 24h.');
         
         // Reset form dopo successo
         setFormData({
@@ -102,7 +102,7 @@ function Contact() {
           </h1>
           <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Contattaci per iniziare il viaggio verso il tuo abito da sogno
+            Contattaci per iniziare la creazione del tuo abito o capo su misura. Ti rispondiamo entro 24h.
           </p>
         </div>
 
@@ -214,7 +214,7 @@ function Contact() {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.message ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Raccontaci del tuo giorno speciale..."
+            placeholder="Raccontaci cosa desideri: stile, colori, materiali, occasioni..."
                 ></textarea>
                 {errors.message && (
                   <p className="mt-1 text-sm text-red-600 flex items-center gap-1">

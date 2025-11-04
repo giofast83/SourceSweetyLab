@@ -5,6 +5,17 @@ function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-20">
       <div className="max-w-6xl mx-auto px-6">
+        {/* CTA ripetuta nel footer */}
+        <div className="bg-pink-600/10 border border-pink-500/30 rounded-2xl p-6 mb-10 text-center">
+          <h3 className="text-xl font-serif text-white mb-2">Pronto a creare il tuo capo su misura?</h3>
+          <p className="text-sm text-pink-100 mb-4">Ti rispondiamo entro 24h</p>
+          <a
+            href="/contatti"
+            className="inline-block px-6 py-3 bg-pink-600 text-white rounded-full text-sm font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
+          >
+            Prenota la tua consulenza
+          </a>
+        </div>
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -16,7 +27,7 @@ function Footer() {
               />
             </div>
             <p className="text-gray-400 leading-relaxed">
-              Atelier di abiti da sposa su misura. Creiamo il tuo sogno con passione e professionalità.
+              Atelier di abiti e capi su misura. Creiamo il tuo sogno con passione e professionalità.
             </p>
           </div>
 

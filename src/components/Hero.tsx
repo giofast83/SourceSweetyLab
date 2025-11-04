@@ -55,12 +55,12 @@ function Hero() {
         {/* Titolo e descrizione */}
         <div className="mt-0">
           <h1 className="font-serif h1-responsive md:text-7xl text-gray-800 mb-6 leading-tight tracking-tight max-w-[24ch] mx-auto md:max-w-none">
-            <span className="block">Il tuo abito da sogno,</span>
-            <span className="block text-pink-700">creato su misura per te</span>
+            <span className="block">Abiti su misura per</span>
+            <span className="block text-pink-700">ogni occasione</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-700 mb-4 md:mb-8 max-w-3xl mx-auto font-light leading-relaxed">
-            Eleonora e Veronica ti guidano con cura e professionalità in ogni dettaglio del tuo giorno speciale.
+            Eleonora e Veronica ti guidano con cura e professionalità nella creazione di abiti e capi personalizzati: cerimonia, eventi e quotidiano.
           </p>
         </div>
 

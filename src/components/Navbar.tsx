@@ -72,6 +72,14 @@ function Navbar() {
                 )}
               </Link>
             ))}
+            {/* CTA ripetuta */}
+            <Link
+              to="/contatti"
+              className="ml-4 px-4 py-2 bg-pink-600 text-white rounded-full text-sm font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
+              title="Prenota la tua consulenza (ti rispondiamo entro 24h)"
+            >
+              Prenota consulenza
+            </Link>
           </div>
 
           {/* Burger menu: visibile solo su mobile, posizionato a destra */}
@@ -111,6 +119,17 @@ function Navbar() {
                 {item.name}
               </Link>
             ))}
+            <div className="px-2 pt-2">
+              <Link
+                to="/contatti"
+                onClick={() => setIsMenuOpen(false)}
+                className="block w-full text-center px-4 py-3 bg-pink-600 text-white rounded-full text-base font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
+                title="Prenota la tua consulenza (ti rispondiamo entro 24h)"
+              >
+                Prenota la tua consulenza
+              </Link>
+              <p className="mt-2 text-center text-xs text-gray-600">Ti rispondiamo entro 24h</p>
+            </div>
           </div>
         </div>
       </div>
