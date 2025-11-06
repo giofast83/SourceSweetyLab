@@ -9,12 +9,11 @@ import logoSweetyLab from '../assets/Logo_SweetyLab.png';
   const lastYRef = useRef(0);
   const location = useLocation();
 
+  // Voci del menu aggiornate per rispecchiare le tre sezioni della Landing
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Chi Siamo', href: '/chi-siamo' },
-    { name: 'Servizi', href: '/servizi' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'Contatti', href: '/contatti' }
+    { name: 'Collezione', href: '/collezione' },
+    { name: 'Su Misura', href: '/servizi' },
+    { name: 'Upcycling', href: '/portfolio' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -105,21 +104,34 @@ import logoSweetyLab from '../assets/Logo_SweetyLab.png';
             </button>
           </div>
           <div className="w-full h-full flex items-center justify-center text-center px-6">
-            <ul className="space-y-6 md:space-y-8">
-              {navigation.map((item, i) => (
-                <li key={item.name} className="menu-item-appear" style={{ animationDelay: `${i * 120}ms` }}>
-                  <Link
-                    to={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`text-[#1A1A1A] uppercase tracking-[0.25em] font-serif text-2xl md:text-3xl lg:text-4xl hover:underline decoration-[#1A1A1A] decoration-[0.5px] underline-offset-8 transition-colors ${
-                      isActive(item.href) ? 'opacity-60' : 'opacity-100'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <ul className="space-y-6 md:space-y-8">
+                {navigation.map((item, i) => (
+                  <li key={item.name} className="menu-item-appear" style={{ animationDelay: `${i * 120}ms` }}>
+                    <Link
+                      to={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`text-[#1A1A1A] uppercase tracking-[0.25em] font-serif text-2xl md:text-3xl lg:text-4xl hover:underline decoration-[#1A1A1A] decoration-[0.5px] underline-offset-8 transition-colors ${
+                        isActive(item.href) ? 'opacity-60' : 'opacity-100'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              {/* CTA: Prenota un appuntamento */}
+              <div className="mt-10 md:mt-12 menu-item-appear" style={{ animationDelay: `${navigation.length * 120}ms` }}>
+                <Link
+                  to="/contatti"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-cipria-600 hover:bg-cipria-700 text-white text-base md:text-lg px-7 md:px-8 py-3.5 md:py-4 shadow-sm hover:shadow-md transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cipria-500"
+                >
+                  Prenota un appuntamento
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}
