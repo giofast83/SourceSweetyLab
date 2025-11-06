@@ -118,6 +118,8 @@ export default function Landing() {
     sectionRef: MutableRefObject<HTMLElement | null>;
   }) => {
     const isActive = active === panel;
+    // Visual: niente bianco e nero. Solo overlay sui pannelli chiusi (non attivi).
+    const isActiveVisual = isActive;
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
@@ -144,6 +146,10 @@ export default function Landing() {
           // Su dispositivi senza hover usiamo il click/touch per attivare il pannello
           if (!hasHover) handleClick(panel);
         }}
+        onTouchStart={(e) => {
+          // Assicura che il tap attivi il pannello immediatamente su mobile
+          if (!hasHover) handleClick(panel);
+        }}
         aria-label={title}
         role="button"
         tabIndex={0}
@@ -156,7 +162,7 @@ export default function Landing() {
           src={img}
           alt={title}
           className={`absolute -inset-[2px] w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform ${
-            isActive ? 'animate-ken-burns-slow filter saturate-100' : 'filter saturate-0'
+            isActiveVisual ? 'animate-ken-burns-slow' : ''
           }`}
           style={{
             objectPosition: 'center',
@@ -165,10 +171,8 @@ export default function Landing() {
 
         {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
         <div
-          className={`absolute -inset-[2px] transition-opacity duration-[1800ms] ease-in-out ${
-            isActive
-              ? 'bg-gradient-to-t from-black/25 via-black/15 to-transparent'
-              : 'bg-gradient-to-t from-black/70 via-black/50 to-transparent group-hover:from-black/40 group-hover:via-black/25 group-hover:to-transparent'
+          className={`pointer-events-none absolute -inset-[2px] bg-gradient-to-t from-black/70 via-black/50 to-transparent transition-opacity duration-500 ease-out will-change-opacity ${
+            isActiveVisual ? 'opacity-0' : 'opacity-100'
           }`}
         />
 
