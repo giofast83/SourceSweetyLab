@@ -1,274 +1,120 @@
-import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import { useEffect, useState } from 'react';
+import logoSweetyLab from '../assets/Logo_SweetyLab.png';
+
+// Immagini rappresentative dai contenuti del progetto
 import imgCollezione from '../assets/creazione-08-1024.jpg';
 import imgSuMisura from '../assets/atelier-in-azione-1024.jpg';
 import imgUpcycling from '../assets/tessuti-pregiati-1024.jpg';
-import LogoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 type PanelKey = 'collezione' | 'suMisura' | 'upcycling';
 
+const panels: { key: PanelKey; title: string; image: string; description: string }[] = [
+  {
+    key: 'collezione',
+    title: 'Collezione',
+    image: imgCollezione,
+    description: 'Mini collezioni a tiratura limitata',
+  },
+  {
+    key: 'suMisura',
+    title: 'Su Misura',
+    image: imgSuMisura,
+    description: 'Il tuo abito, creato solo per te',
+  },
+  {
+    key: 'upcycling',
+    title: 'Upcycling',
+    image: imgUpcycling,
+    description: 'Trasforma e rinnova i tuoi capi',
+  },
+];
+
 export default function Landing() {
   const [active, setActive] = useState<PanelKey>('collezione');
-  const [isRowLayout, setIsRowLayout] = useState<boolean>(true);
-  const [hasHover, setHasHover] = useState<boolean>(false);
-  const [showLogo, setShowLogo] = useState<boolean>(false);
+  const [isHoverDevice, setIsHoverDevice] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({
-    width: 0,
-    height: 0,
-  });
-
-  const collezioneRef = useRef<HTMLElement | null>(null);
-  const suMisuraRef = useRef<HTMLElement | null>(null);
-  const upcyclingRef = useRef<HTMLElement | null>(null);
-
+  // Rileva se il device supporta hover (desktop con puntatore fine)
   useEffect(() => {
-    const mqRow = window.matchMedia('(min-width: 768px)');
-    const mqHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-    const updateLayout = () => setIsRowLayout(mqRow.matches);
-    const updateHover = () => setHasHover(mqHover.matches);
-
-    updateLayout();
-    updateHover();
-
-    mqRow.addEventListener('change', updateLayout);
-    mqHover.addEventListener('change', updateHover);
-
-    const updateSize = () => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      setContainerSize({
-        width: rect?.width ?? window.innerWidth,
-        height: rect?.height ?? window.innerHeight,
-      });
-    };
-
-    updateSize();
-    window.addEventListener('resize', updateSize);
-
-    const t = setTimeout(() => setShowLogo(true), 50);
-
-    return () => {
-      mqRow.removeEventListener('change', updateLayout);
-      mqHover.removeEventListener('change', updateHover);
-      window.removeEventListener('resize', updateSize);
-      clearTimeout(t);
-    };
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const update = () => setIsHoverDevice(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
-  const basisFor = (panel: PanelKey): string => {
-    if (active === 'collezione') {
-      if (panel === 'collezione') return '70%';
-      return '15%';
-    }
-    if (active === panel) return '80%';
-    return '10%';
-  };
-
-  const widthPxFor = (panel: PanelKey): string => {
-    const w = containerSize.width;
-    if (!w) return basisFor(panel);
-    if (active === 'collezione') {
-      if (panel === 'collezione') return `${Math.round(w * 0.7)}px`;
-      return `${Math.round(w * 0.15)}px`;
-    }
-    if (active === panel) return `${Math.round(w * 0.8)}px`;
-    return `${Math.round(w * 0.1)}px`;
-  };
-
-  const heightPxFor = (panel: PanelKey): string => {
-    const h = containerSize.height;
-    if (!h) return heightFor(panel);
-
-    if (active === 'collezione') {
-      if (panel === 'collezione') return `${Math.round(h * 0.7)}px`;
-      return `${Math.round(h * 0.15)}px`;
-    }
-    if (active === panel) return `${Math.round(h * 0.7)}px`;
-    if (panel === 'collezione') return `${Math.round(h * 0.2)}px`;
-    return `${Math.round(h * 0.1)}px`;
-  };
-
-  const heightFor = (panel: PanelKey): string => {
-    if (active === 'collezione') {
-      if (panel === 'collezione') return '70vh';
-      return '15vh';
-    }
-    if (active === panel) return '70vh';
-    if (panel === 'collezione') return '20vh';
-    return '10vh';
-  };
-
-  const logoFilter = 'saturate(0) brightness(0)';
-
-  const handleClick = (panel: PanelKey) => {
-    setActive(panel);
-  };
-
-  const Panel = ({
-    panel,
-    title,
-    img,
-    sectionRef,
-  }: {
-    panel: PanelKey;
-    title: string;
-    img: string;
-    sectionRef: MutableRefObject<HTMLElement | null>;
-  }) => {
-    const isActive = active === panel;
-
-    return (
-      <section
-        ref={(el) => (sectionRef.current = el)}
-        className="group panel relative h-screen overflow-hidden cursor-pointer"
-        data-panel={panel}
-        style={{
-          height: !isRowLayout ? heightPxFor(panel) : undefined,
-          transition: !isRowLayout ? 'height 800ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
-          flex: isRowLayout && !hasHover ? ('1 0 auto' as any) : undefined,
-          flexBasis: isRowLayout && !hasHover ? widthPxFor(panel) : undefined,
-          transitionProperty: isRowLayout && !hasHover ? ('flex-basis' as any) : undefined,
-          transitionDuration: isRowLayout && !hasHover ? '2200ms' : undefined,
-          transitionTimingFunction: isRowLayout && !hasHover ? 'cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
-        }}
-        onClick={() => {
-          // Consenti sempre la selezione via click/touch, anche su dispositivi che riportano hover
-          handleClick(panel);
-        }}
-        onTouchStart={() => {
-          handleClick(panel);
-        }}
-      >
-        {/* Immagine */}
-        <img
-          src={img}
-          alt={title}
-          className={`absolute -inset-[2px] w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform z-0 ${
-            isActive ? 'animate-ken-burns-slow' : ''
-          }`}
-        />
-
-        {/* Overlay */}
-        <div
-          className={`pointer-events-none absolute -inset-[2px] bg-gradient-to-t from-black/70 via-black/50 to-transparent transition-opacity duration-500 ease-out will-change-opacity z-10 ${
-            hasHover
-              ? isActive
-                ? 'opacity-0'
-                : 'opacity-100 group-hover:opacity-0'
-              : isActive
-              ? 'opacity-0'
-              : 'opacity-100'
-          }`}
-        />
-
-        {/* ✅ ✅ TESTI DESKTOP */}
-        {isRowLayout && (
-          <>
-            {/* Titolo + sottotitolo desktop (solo quando attivo) */}
-            <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity duration-150 ease-out z-20 ${
-                hasHover
-                  ? isActive
-                    ? 'opacity-100'
-                    : 'opacity-0 group-hover:opacity-100'
-                  : isActive
-                  ? 'opacity-100'
-                  : 'opacity-0'
-              }`}
-            >
-              <div className="px-6 md:px-10">
-                <h2 className="text-3xl md:text-5xl font-semibold tracking-wide text-shadow-strong">{title}</h2>
-                <p className="mt-3 text-sm md:text-base max-w-xl text-shadow-strong-sm">
-                  {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
-                  {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
-                  {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
-                </p>
-              </div>
-            </div>
-
-            {/* ✅ Titolo verticale ridotto SOLO su desktop */}
-            <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-150 ease-out z-20 ${
-                hasHover
-                  ? isActive
-                    ? 'opacity-0'
-                    : 'opacity-100 group-hover:opacity-0'
-                  : isActive
-                  ? 'opacity-0'
-                  : 'opacity-100'
-              }`}
-            >
-              <h2
-                className="text-3xl md:text-4xl font-semibold tracking-wide text-[#fffaf0] drop-shadow-md"
-                style={{ writingMode: 'vertical-rl' }}
-              >
-                {title}
-              </h2>
-            </div>
-          </>
-        )}
-
-        {/* ✅ ✅ TESTI MOBILE */}
-        {!isRowLayout && (
-          <div
-            className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity transition-transform duration-500 ease-out z-50 ${
-              isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-2'
-            }`}
-          >
-            <div className="px-6 py-4">
-              <h2 className="text-2xl font-semibold tracking-wide text-shadow-strong">{title}</h2>
-
-              {/* ✅ Sottotitolo mobile appare SOLO quando attivo */}
-              <p
-                className={`mt-2 text-sm leading-snug max-w-xs transition-opacity duration-300 text-shadow-strong-sm ${
-                  isActive ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
-                {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
-                {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
-    );
+  const basisFor = (key: PanelKey) => {
+    // Attivo 70%, laterali 15% come richiesto
+    return active === key ? 'basis-[70%]' : 'basis-[15%]';
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden">
-      {/* Logo */}
-      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        <div
-          className={`w-full bg-gradient-to-r from-white/60 via-white/40 to-white/60 backdrop-blur-sm shadow-sm transition-opacity duration-700 ease-out ${
-            showLogo ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div className="flex items-center justify-center h-20 md:h-24 px-4">
+    <div className="h-screen w-screen overflow-hidden bg-black">
+      {/* Logo con riga semitrasparente, poco staccata dall'alto e posizionata in alto a sinistra.
+          La riga è leggermente più larga del logo (grazie al padding) e resta sovrapposta alle foto. */}
+      <div className="pointer-events-none fixed top-4 md:top-6 left-4 md:left-8 z-20">
+        <div className="relative">
+          <div className="inline-flex items-center justify-center bg-white/60 rounded-full h-16 md:h-20 px-4 md:px-6">
             <img
-              src={LogoSweetyLab}
-              alt="Sweety Lab — Sartoria artigianale"
-              className={`${isRowLayout ? 'w-40' : 'w-32'} select-none`}
-              style={{ filter: logoFilter }}
+              src={logoSweetyLab}
+              alt="SweetyLab"
+              className="h-12 md:h-16"
             />
           </div>
         </div>
-        <h1 className="sr-only">
-          Sweety Lab – Sartoria artigianale: Collezione, Su Misura, Upcycling
-        </h1>
-      </header>
-
+      </div>
       <div
-        ref={containerRef}
-        className="panels flex w-full h-full md:flex-row flex-col overflow-y-hidden overflow-x-hidden"
-        onMouseLeave={() => {
-          if (hasHover) setActive('collezione');
-        }}
+        className="flex flex-col md:flex-row h-full w-full"
+        onMouseLeave={isHoverDevice ? () => setActive('collezione') : undefined}
       >
-        <Panel panel="collezione" title="Collezione" img={imgCollezione} sectionRef={collezioneRef} />
-        <Panel panel="suMisura" title="Su Misura" img={imgSuMisura} sectionRef={suMisuraRef} />
-        <Panel panel="upcycling" title="Upcycling" img={imgUpcycling} sectionRef={upcyclingRef} />
+        {panels.map((p) => (
+          <button
+            key={p.key}
+            type="button"
+            aria-label={`Apri ${p.title}`}
+            aria-expanded={active === p.key}
+            onMouseEnter={
+              isHoverDevice ? () => setActive(p.key) : undefined
+            }
+            onClick={!isHoverDevice ? () => setActive(p.key) : undefined}
+            className={`group relative h-auto md:h-full ${basisFor(p.key)} overflow-hidden transition-all duration-1000 ease-in-out transform-gpu focus:outline-none hover:brightness-105 hover:scale-[1.01]`}
+            style={{
+              backgroundImage: `url(${p.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              willChange: 'flex-basis, opacity, transform, filter',
+            }}
+          >
+            {/* Velo per contrasto testo: rimosso sul pannello attivo */}
+            <div className={`absolute inset-0 ${active === p.key ? 'bg-black/0' : 'bg-black/50'} transition-colors duration-1000`} />
+
+            {/* Etichetta/Contenuto */}
+            <div className="absolute inset-0 p-6 md:p-8">
+              {active === p.key ? (
+                // Pannello attivo: contenuto allineato in basso a destra
+                <div className="absolute bottom-0 right-0 w-full flex justify-end text-right pb-6 md:pb-12">
+                  <div className="flex flex-col gap-3 md:gap-4 text-white items-end transition-opacity duration-900 ease-in-out opacity-100 pr-6 md:pr-12">
+                    <h2 className="text-3xl md:text-5xl font-semibold tracking-wide" style={{ textShadow: '0 3px 6px rgba(0,0,0,0.9)' }}>
+                      {p.title}
+                    </h2>
+                    <p className="max-w-2xl mx-auto text-sm md:text-base text-white/90" style={{ textShadow: '0 3px 10px rgba(0,0,0,0.7)' }}>
+                      {p.description}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                // Pannello ridotto: titolo ruotato (90°) sul bordo destro, allineato in basso
+                <div className="absolute right-4 md:right-8 bottom-4 md:bottom-6 z-10">
+                  <h2
+                    className="text-white text-3xl md:text-4xl lg:text-4xl font-medium leading-none tracking-tight transition-all duration-900 ease-in-out rotate-0 md:rotate-90 origin-bottom-right md:origin-right whitespace-nowrap"
+                    style={{ textShadow: '0 4px 18px rgba(0,0,0,0.85)' }}
+                  >
+                    {p.title}
+                  </h2>
+                </div>
+              )}
+            </div>
+          </button>
+        ))}
       </div>
     </div>
   );
