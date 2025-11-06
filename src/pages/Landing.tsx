@@ -180,21 +180,31 @@ export default function Landing() {
           }`}
         />
 
-        {/* Testo: se attivo, orizzontale con titolo + sottotitolo; se chiuso su desktop, titolo verticale */}
-        {isActive ? (
-          <div className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0]`}>
-            <div className="px-6 md:px-10 transition-opacity duration-[1800ms] ease-in-out">
-              <h2 className="text-3xl md:text-5xl font-semibold tracking-wide opacity-100 drop-shadow-lg">{title}</h2>
-              <p className="mt-3 text-sm md:text-base max-w-xl transition-opacity duration-[1800ms] ease-in-out opacity-100 drop-shadow">
-                {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
-                {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
-                {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
-              </p>
+        {/* Testi: gestione uniforme per desktop (hover) e mobile (stato attivo) */}
+        {isRowLayout ? (
+          <>
+            {/* Blocco ATTIVO: orizzontale con sottotitolo */}
+            <div
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity duration-500 ease-out ${
+                hasHover ? 'opacity-0 group-hover:opacity-100' : isActive ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <div className="px-6 md:px-10">
+                <h2 className="text-3xl md:text-5xl font-semibold tracking-wide drop-shadow-lg">{title}</h2>
+                <p className="mt-3 text-sm md:text-base max-w-xl opacity-100 drop-shadow">
+                  {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
+                  {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
+                  {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
+                </p>
+              </div>
             </div>
-          </div>
-        ) : (
-          isRowLayout ? (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6">
+
+            {/* Blocco RIDOTTO: verticale senza sottotitolo */}
+            <div
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-500 ease-out ${
+                hasHover ? 'opacity-100 group-hover:opacity-0' : isActive ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
               <h2
                 className="text-3xl md:text-4xl font-semibold tracking-wide text-[#fffaf0] drop-shadow-md"
                 style={{ writingMode: 'vertical-rl' }}
@@ -202,11 +212,34 @@ export default function Landing() {
                 {title}
               </h2>
             </div>
-          ) : (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4">
+          </>
+        ) : (
+          <>
+            {/* Mobile ATTIVO: orizzontale con sottotitolo */}
+            <div
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity duration-500 ease-out ${
+                isActive ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <div className="px-6">
+                <h2 className="text-2xl font-semibold tracking-wide drop-shadow-lg">{title}</h2>
+                <p className="mt-2 text-xs max-w-xs opacity-100 drop-shadow">
+                  {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
+                  {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
+                  {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
+                </p>
+              </div>
+            </div>
+
+            {/* Mobile RIDOTTO: titolo piccolo orizzontale, senza sottotitolo */}
+            <div
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 transition-opacity duration-500 ease-out ${
+                isActive ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
               <h2 className="text-lg font-semibold tracking-wide text-[#fffaf0] drop-shadow-md">{title}</h2>
             </div>
-          )
+          </>
         )}
 
         {/* CTA rimossa su richiesta */}
