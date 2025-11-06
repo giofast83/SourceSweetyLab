@@ -44,7 +44,7 @@ function Contact() {
 
       if (result.success) {
         setSubmitted(true);
-        setSubmitMessage('Grazie! La tua richiesta è stata inviata con successo. Ti risponderemo entro 24h.');
+        setSubmitMessage('Grazie! La tua richiesta è stata inviata con successo. Ti contatteremo presto!');
         
         // Reset form dopo successo
         setFormData({
@@ -97,12 +97,12 @@ function Contact() {
     <section id="contact" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h1 className="font-serif h1-responsive md:text-5xl text-gray-800 mb-6 tracking-tight leading-tight max-w-[24ch] mx-auto md:max-w-none">
+          <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Prenota la tua consulenza oggi
-          </h1>
+          </h2>
           <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Contattaci per iniziare la creazione del tuo abito o capo su misura. Ti rispondiamo entro 24h.
+            Contattaci per iniziare il viaggio verso il tuo abito da sogno
           </p>
         </div>
 
@@ -214,7 +214,7 @@ function Contact() {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
                     errors.message ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-            placeholder="Raccontaci cosa desideri: stile, colori, materiali, occasioni..."
+                  placeholder="Raccontaci del tuo giorno speciale..."
                 ></textarea>
                 {errors.message && (
                   <p className="mt-1 text-sm text-red-600 flex items-center gap-1">

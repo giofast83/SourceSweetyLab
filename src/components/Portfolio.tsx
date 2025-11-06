@@ -1,21 +1,30 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
+import creazione01Img from '../assets/creazione-01-1024.jpg';
+import creazione02Img from '../assets/creazione-02-1024.jpg';
+import creazione03Img from '../assets/creazione-03-1024.jpg';
 import creazione04Img from '../assets/creazione-04-1024.jpg';
 import creazione05Img from '../assets/creazione-05-1024.jpg';
 import creazione06Img from '../assets/creazione-06-1024.jpg';
-import creazione07Img from '../assets/creazione-07-1024.jpg';
-import creazione08Img from '../assets/creazione-08-1024.jpg';
-import creazione09Img from '../assets/creazione-09-1024.jpg';
 
 function Portfolio() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  // Disattivate le prime tre foto (creazione 01-03) dal portfolio, senza eliminare i file
   const items = [
     {
-      title: 'Abito contemporaneo con taglio sartoriale',
-      description: 'Linee moderne e silhouette elegante',
-      image: creazione07Img
+      title: 'Abito romantico in pizzo francese',
+      description: 'Delicato e sofisticato, con dettagli floreali',
+      image: creazione01Img
+    },
+    {
+      title: 'Abito sartoriale con dettagli artigianali',
+      description: 'Eleganza classica con ricami personalizzati',
+      image: creazione02Img
+    },
+    {
+      title: 'Abito principesco con strascico',
+      description: 'Per una sposa che sogna la favola',
+      image: creazione03Img
     },
     {
       title: 'Abito bohémien con trasparenze',
@@ -23,19 +32,9 @@ function Portfolio() {
       image: creazione04Img
     },
     {
-      title: 'Abito elegante con dettagli moderni',
-      description: 'Raffinatezza contemporanea e cura dei particolari',
-      image: creazione08Img
-    },
-    {
       title: 'Abito minimal con linee pure',
       description: 'Essenziale ed elegante, senza tempo',
       image: creazione05Img
-    },
-    {
-      title: 'Abito sofisticato con texture pregiate',
-      description: 'Materiali di qualità e finiture artigianali',
-      image: creazione09Img
     },
     {
       title: 'Abito vintage con perline',
@@ -48,9 +47,9 @@ function Portfolio() {
     <section id="portfolio" className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h1 className="font-serif h1-responsive md:text-5xl text-gray-800 mb-6 tracking-tight leading-tight max-w-[24ch] mx-auto md:max-w-none">
+          <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-6">
             Le nostre creazioni
-          </h1>
+          </h2>
           <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Ogni abito racconta una storia unica

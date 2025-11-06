@@ -1,22 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import logoSweetyLab from '../assets/Logo_SweetyLab.png';
+import { Heart, Menu, X } from 'lucide-react';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const onHome = location.pathname === '/';
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 10);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -31,30 +19,16 @@ function Navbar() {
   };
 
   return (
-    <nav
-      className={`${onHome && !hasScrolled
-        ? 'bg-transparent backdrop-blur-0 shadow-none border-transparent'
-        : 'bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20'
-      } fixed w-full top-0 z-50 transition-all duration-300`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div
-          className={`flex justify-between items-center h-20 ${onHome && !hasScrolled ? 'md:opacity-0 md:pointer-events-none' : 'md:opacity-100 md:pointer-events-auto'}`}
-        >
+    <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 fixed w-full top-0 z-50 transition-all duration-300">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link
-            to="/"
-            className={`${onHome && !hasScrolled ? 'hidden md:flex' : 'flex'} items-center gap-1 sm:gap-2 group transition-all duration-300 hover:scale-105`}
-          >
-            <img
-              src={logoSweetyLab}
-              alt="SweetyLab Logo"
-              className="h-16 w-auto object-contain"
-              style={{ filter: 'invert(18%) sepia(71%) saturate(4571%) hue-rotate(313deg) brightness(95%) contrast(98%)' }}
-            />
+          <Link to="/" className="flex items-center gap-2 group transition-all duration-300 hover:scale-105">
+            <Heart className="w-6 h-6 text-pink-500 transition-all duration-300 group-hover:text-pink-600 group-hover:scale-110" fill="currentColor" />
+            <span className="text-2xl font-serif text-gray-800 transition-all duration-300 group-hover:text-pink-700">SweetyLab</span>
           </Link>
 
-          {/* Desktop Menu (sempre visibile su desktop) */}
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-2">
             {navigation.map((item) => (
               <Link
@@ -72,21 +46,13 @@ function Navbar() {
                 )}
               </Link>
             ))}
-            {/* CTA ripetuta */}
-            <Link
-              to="/contatti"
-              className="ml-4 px-4 py-2 bg-pink-600 text-white rounded-full text-sm font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
-              title="Prenota la tua consulenza (ti rispondiamo entro 24h)"
-            >
-              Prenota consulenza
-            </Link>
           </div>
 
-          {/* Burger menu: visibile solo su mobile, posizionato a destra */}
-          <div className="md:hidden ml-auto">
+          {/* Mobile menu button */}
+          <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-pink-600 hover:text-pink-700 focus:outline-none focus:text-pink-700 transition-all duration-300 hover:bg-pink-50/80 rounded-full hover:scale-110"
+              className="p-2 text-gray-700 hover:text-pink-600 focus:outline-none focus:text-pink-600 transition-all duration-300 hover:bg-pink-50/80 rounded-full hover:scale-110"
             >
               <div className="relative w-6 h-6">
                 <Menu className={`w-6 h-6 absolute transition-all duration-300 ${isMenuOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`} />
@@ -100,7 +66,7 @@ function Navbar() {
         <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="px-2 pt-2 pb-3 space-y-2 bg-white/90 backdrop-blur-sm border-t border-pink-100 rounded-2xl shadow-xl">
+          <div className="px-2 pt-2 pb-3 space-y-2 bg-white/90 backdrop-blur-sm border-t border-pink-100 rounded-b-2xl shadow-xl">
             {navigation.map((item, index) => (
               <Link
                 key={item.name}
@@ -119,17 +85,6 @@ function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <div className="px-2 pt-2">
-              <Link
-                to="/contatti"
-                onClick={() => setIsMenuOpen(false)}
-                className="block w-full text-center px-4 py-3 bg-pink-600 text-white rounded-full text-base font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
-                title="Prenota la tua consulenza (ti rispondiamo entro 24h)"
-              >
-                Prenota la tua consulenza
-              </Link>
-              <p className="mt-2 text-center text-xs text-gray-600">Ti rispondiamo entro 24h</p>
-            </div>
           </div>
         </div>
       </div>

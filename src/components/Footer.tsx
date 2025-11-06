@@ -1,34 +1,17 @@
-import { Instagram, Facebook } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import logoSweetyLab from '../assets/Logo_SweetyLab.png';
+import { Heart, Instagram, Facebook } from 'lucide-react';
 
 function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-20">
       <div className="max-w-6xl mx-auto px-6">
-        {/* CTA ripetuta nel footer */}
-        <div className="bg-pink-600/10 border border-pink-500/30 rounded-2xl p-6 mb-10 text-center">
-          <h3 className="text-xl font-serif text-white mb-2">Pronto a creare il tuo capo su misura?</h3>
-          <p className="text-sm text-pink-100 mb-4">Ti rispondiamo entro 24h</p>
-          <Link
-            to="/contatti"
-            className="inline-block px-6 py-3 bg-pink-600 text-white rounded-full text-sm font-semibold hover:bg-pink-700 transition-all shadow-md hover:shadow-lg"
-          >
-            Prenota la tua consulenza
-          </Link>
-        </div>
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img
-                src={logoSweetyLab}
-                alt="SweetyLab Logo"
-                className="h-16 w-auto object-contain"
-                style={{ filter: 'invert(18%) sepia(71%) saturate(4571%) hue-rotate(313deg) brightness(95%) contrast(98%) drop-shadow(0 2px 6px rgba(255,255,255,0.15))' }}
-              />
+              <Heart className="w-6 h-6 text-pink-500" fill="currentColor" />
+              <h3 className="text-2xl font-serif">SweetyLab</h3>
             </div>
             <p className="text-gray-400 leading-relaxed">
-              Atelier di abiti e capi su misura. Creiamo il tuo sogno con passione e professionalità.
+              Atelier di abiti da sposa su misura. Creiamo il tuo sogno con passione e professionalità.
             </p>
           </div>
 

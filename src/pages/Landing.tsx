@@ -110,9 +110,6 @@ export default function Landing() {
           width: isDesktop ? `${sizes[order.indexOf(panel)]}%` : undefined,
           height: !isDesktop ? `${sizes[order.indexOf(panel)]}vh` : undefined,
           willChange: isDesktop ? ('width' as any) : ('height' as any),
-          // Migliora la stabilità visiva su iOS/Safari durante l'animazione
-          contain: 'layout paint',
-          transform: 'translateZ(0)',
         }}
         onMouseEnter={() => {
           if (isDesktop) setActive(panel);
@@ -133,15 +130,6 @@ export default function Landing() {
           src={img}
           alt={title}
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform hover:scale-105 hover:brightness-110`}
-          style={{
-            // Forza compositing GPU per evitare sfarfallii su iPhone/Safari
-            transform: 'translateZ(0)',
-            WebkitTransform: 'translate3d(0,0,0)',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            willChange: 'transform, opacity',
-            contain: 'paint',
-          }}
         />
 
         {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
@@ -151,15 +139,6 @@ export default function Landing() {
               ? 'bg-gradient-to-t from-black/25 via-black/15 to-transparent'
               : 'bg-gradient-to-t from-black/70 via-black/50 to-transparent group-hover:from-black/40 group-hover:via-black/25 group-hover:to-transparent'
           }`}
-          style={{
-            // Anche l'overlay è compositato per ridurre repaint pesanti
-            transform: 'translateZ(0)',
-            WebkitTransform: 'translate3d(0,0,0)',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            willChange: 'opacity, transform',
-            contain: 'paint',
-          }}
         />
 
         {/* Testo: se attivo, orizzontale con titolo + sottotitolo; se chiuso su desktop, titolo verticale */}
