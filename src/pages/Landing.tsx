@@ -126,9 +126,9 @@ export default function Landing() {
         className={`group panel relative h-screen overflow-hidden cursor-pointer`}
         data-panel={panel}
         style={{
-          // Layout verticale (mobile/schermi piccoli): animiamo altezza in pixel
+          // Layout verticale (mobile/schermi piccoli): animiamo altezza in pixel e rendiamo più reattivo lo slide
           height: !isRowLayout ? heightPxFor(panel) : undefined,
-          transition: !isRowLayout ? 'height 2200ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+          transition: !isRowLayout ? 'height 800ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
           willChange: !isRowLayout ? ('height' as any) : undefined,
           // Layout orizzontale su dispositivi senza hover: animiamo flex-basis via JS
           flex: isRowLayout && !hasHover ? ('1 0 auto' as any) : undefined,
@@ -217,8 +217,8 @@ export default function Landing() {
           <>
             {/* Mobile ATTIVO: orizzontale con sottotitolo */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity duration-500 ease-out ${
-                isActive ? 'opacity-100' : 'opacity-0'
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity transition-transform duration-500 ease-out transform will-change-transform ${
+                isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
               }`}
             >
               <div className="px-6">
@@ -233,8 +233,8 @@ export default function Landing() {
 
             {/* Mobile RIDOTTO: titolo piccolo orizzontale, senza sottotitolo */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 transition-opacity duration-500 ease-out ${
-                isActive ? 'opacity-0' : 'opacity-100'
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 transition-opacity transition-transform duration-500 ease-out transform will-change-transform ${
+                isActive ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
               }`}
             >
               <h2 className="text-lg font-semibold tracking-wide text-[#fffaf0] drop-shadow-md">{title}</h2>
