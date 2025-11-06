@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 // Immagini rappresentative dai contenuti del progetto
@@ -32,6 +33,7 @@ const panels: { key: PanelKey; title: string; image: string; description: string
 export default function Landing() {
   const [active, setActive] = useState<PanelKey>('collezione');
   const [isHoverDevice, setIsHoverDevice] = useState(false);
+  const navigate = useNavigate();
 
   // Rileva se il device supporta hover (desktop con puntatore fine)
   useEffect(() => {
@@ -45,6 +47,29 @@ export default function Landing() {
   const basisFor = (key: PanelKey) => {
     // Attivo 70%, laterali 15% come richiesto
     return active === key ? 'basis-[70%]' : 'basis-[15%]';
+  };
+
+  const pathFor = (key: PanelKey) => {
+    switch (key) {
+      case 'collezione':
+        return '/collezione';
+      case 'suMisura':
+        return '/servizi'; // pagina “Su Misura” attualmente sotto Servizi
+      case 'upcycling':
+        return '/portfolio'; // in assenza di pagina dedicata, rimando al Portfolio
+      default:
+        return '/';
+    }
+  };
+
+  const handleClick = (key: PanelKey) => {
+    // Al primo click (o interazione), attiva il pannello;
+    // al secondo click sul pannello già attivo, apri la pagina relativa.
+    if (active === key) {
+      navigate(pathFor(key));
+    } else {
+      setActive(key);
+    }
   };
 
   return (
@@ -75,7 +100,7 @@ export default function Landing() {
             onMouseEnter={
               isHoverDevice ? () => setActive(p.key) : undefined
             }
-            onClick={!isHoverDevice ? () => setActive(p.key) : undefined}
+            onClick={() => handleClick(p.key)}
             className={`group relative h-auto md:h-full ${basisFor(p.key)} overflow-hidden transition-all duration-1000 ease-in-out transform-gpu focus:outline-none hover:brightness-105 hover:scale-[1.01]`}
             style={{
               backgroundImage: `url(${p.image})`,

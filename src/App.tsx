@@ -7,7 +7,12 @@ import ChiSiamo from './pages/ChiSiamo';
 import Servizi from './pages/Servizi';
 import PortfolioPage from './pages/PortfolioPage';
 import Contatti from './pages/Contatti';
-import Landing from './pages/Landing';
+import Landing from './pages/Landing.tsx';
+import CollectionPage from './pages/CollectionPage.tsx';
+import Essenza from './pages/collections/Essenza.tsx';
+import Luna from './pages/collections/Luna.tsx';
+import Radici from './pages/collections/Radici.tsx';
+import Aurora from './pages/collections/Aurora.tsx';
 
 function AppContent() {
   const location = useLocation();
@@ -27,6 +32,11 @@ function AppContent() {
           <Route path="/servizi" element={<Servizi />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/contatti" element={<Contatti />} />
+          <Route path="/collezione" element={<CollectionPage />} />
+          <Route path="/collezione/essenza" element={<Essenza />} />
+          <Route path="/collezione/luna" element={<Luna />} />
+          <Route path="/collezione/radici" element={<Radici />} />
+          <Route path="/collezione/aurora" element={<Aurora />} />
           {/* Alias: la landing resta raggiungibile anche su /landing */}
           <Route path="/landing" element={<Landing />} />
         </Routes>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,13 +20,12 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 fixed w-full top-0 z-50 transition-all duration-300">
+    <nav className="bg-cipria-50/80 backdrop-blur-md shadow-lg border-b border-cipria-200/40 fixed w-full top-0 z-50 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group transition-all duration-300 hover:scale-105">
-            <Heart className="w-6 h-6 text-pink-500 transition-all duration-300 group-hover:text-pink-600 group-hover:scale-110" fill="currentColor" />
-            <span className="text-2xl font-serif text-gray-800 transition-all duration-300 group-hover:text-pink-700">SweetyLab</span>
+          {/* Logo originale */}
+          <Link to="/" className="flex items-center group transition-all duration-300">
+            <img src={logoSweetyLab} alt="SweetyLab" className="h-8 md:h-10 w-auto transition-transform duration-300 group-hover:scale-105" />
           </Link>
 
           {/* Desktop Menu */}
@@ -36,13 +36,13 @@ function Navbar() {
                 to={item.href}
                 className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 transform hover:scale-105 ${
                   isActive(item.href)
-                    ? 'text-white bg-gradient-to-r from-pink-500 to-pink-600 shadow-lg shadow-pink-500/25'
-                    : 'text-gray-700 hover:text-pink-600 hover:bg-pink-50/80 hover:shadow-md'
+                    ? 'text-white bg-gradient-to-r from-cipria-500 to-cipria-600 shadow-lg shadow-cipria-500/25'
+                    : 'text-gray-700 hover:text-cipria-600 hover:bg-cipria-50/80 hover:shadow-md'
                 }`}
               >
                 <span className="relative z-10">{item.name}</span>
                 {isActive(item.href) && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full animate-pulse opacity-20"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cipria-500 to-cipria-600 rounded-full animate-pulse opacity-20"></div>
                 )}
               </Link>
             ))}
@@ -52,7 +52,7 @@ function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-700 hover:text-pink-600 focus:outline-none focus:text-pink-600 transition-all duration-300 hover:bg-pink-50/80 rounded-full hover:scale-110"
+              className="p-2 text-gray-700 hover:text-cipria-600 focus:outline-none focus:text-cipria-600 transition-all duration-300 hover:bg-cipria-50/80 rounded-full hover:scale-110"
             >
               <div className="relative w-6 h-6">
                 <Menu className={`w-6 h-6 absolute transition-all duration-300 ${isMenuOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`} />
@@ -66,7 +66,7 @@ function Navbar() {
         <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="px-2 pt-2 pb-3 space-y-2 bg-white/90 backdrop-blur-sm border-t border-pink-100 rounded-b-2xl shadow-xl">
+          <div className="px-2 pt-2 pb-3 space-y-2 bg-cipria-50/90 backdrop-blur-sm border-t border-cipria-100 rounded-b-2xl shadow-xl">
             {navigation.map((item, index) => (
               <Link
                 key={item.name}
@@ -74,8 +74,8 @@ function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 transform hover:scale-105 ${
                   isActive(item.href)
-                    ? 'text-white bg-gradient-to-r from-pink-500 to-pink-600 shadow-lg shadow-pink-500/25'
-                    : 'text-gray-700 hover:text-pink-600 hover:bg-pink-50/80 hover:shadow-md'
+                    ? 'text-white bg-gradient-to-r from-cipria-500 to-cipria-600 shadow-lg shadow-cipria-500/25'
+                    : 'text-gray-700 hover:text-cipria-600 hover:bg-cipria-50/80 hover:shadow-md'
                 }`}
                 style={{
                   animationDelay: `${index * 100}ms`,
