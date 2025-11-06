@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 type EditorialImageBlockProps = {
   image: string;
@@ -8,31 +8,14 @@ type EditorialImageBlockProps = {
 };
 
 export default function EditorialImageBlock({ image, title, text, align = 'left' }: EditorialImageBlockProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || 0;
-      // progress da -vh a +vh -> normalizza a [-1,1]
-      const progress = Math.max(-1, Math.min(1, (rect.top - vh / 2) / (vh / 2)));
-      setOffset(progress * 10); // parallax leggero: max 10px
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
-    <section ref={ref} className="relative w-full min-h-[60vh] md:min-h-[80vh] overflow-hidden">
+    <section className="relative w-full min-h-[60vh] md:min-h-[80vh] overflow-hidden">
       <img
         src={image}
         alt={title || 'Editorial Block'}
-        className="absolute inset-x-0 -inset-y-4 w-full h-full object-cover will-change-transform"
-        style={{ transform: `translateY(${offset}px) scale(1.06)` }}
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ transform: 'scale(1.04)' }}
       />
       <div className="absolute inset-0 bg-black/20" />
       {align !== 'full' && (
