@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
-import imgCollezione from '../assets/chi-siamo-1024.jpg';
-import imgSuMisura from '../assets/tessuti-pregiati-1024.jpg';
-import imgUpcycling from '../assets/atelier-in-azione-1024.jpg';
+import imgCollezione from '../assets/creazione-08-1024.jpg';
+import imgSuMisura from '../assets/atelier-in-azione-1024.jpg';
+import imgUpcycling from '../assets/tessuti-pregiati-1024.jpg';
+import LogoSweetyLab from '../assets/Logo_SweetyLab.png';
 
 type PanelKey = 'collezione' | 'suMisura' | 'upcycling';
 
@@ -9,6 +10,7 @@ export default function Landing() {
   // Active panel: default to 'collezione'
   const [active, setActive] = useState<PanelKey>('collezione');
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  const [showLogo, setShowLogo] = useState<boolean>(false);
 
   const collezioneRef = useRef<HTMLElement | null>(null);
   const suMisuraRef = useRef<HTMLElement | null>(null);
@@ -19,7 +21,11 @@ export default function Landing() {
     const update = () => setIsDesktop(mql.matches);
     update();
     mql.addEventListener('change', update);
-    return () => mql.removeEventListener('change', update);
+    const t = setTimeout(() => setShowLogo(true), 50);
+    return () => {
+      mql.removeEventListener('change', update);
+      clearTimeout(t);
+    };
   }, []);
 
   const basisFor = (panel: PanelKey): string => {
@@ -33,18 +39,27 @@ export default function Landing() {
     return '10%';
   };
 
+  // Mobile heights to replicate desktop effect in vertical layout
+  const heightFor = (panel: PanelKey): string => {
+    // Mobile: layout verticale con overlay della barra sopra le immagini
+    // Stato iniziale: Collezione 70vh, altre 15vh
+    if (active === 'collezione') {
+      if (panel === 'collezione') return '70vh';
+      return '15vh';
+    }
+    // Stato attivo (Su Misura o Upcycling):
+    // sezione attiva 70vh, Collezione chiusa ma più alta in alto (20vh), altra chiusa 10vh
+    if (active === panel) return '70vh';
+    if (panel === 'collezione') return '20vh';
+    return '10vh';
+  };
+
+  // Logo sempre nero, monocromatico
+  const logoFilter = 'saturate(0) brightness(0)';
+
   const handleClick = (panel: PanelKey) => {
     setActive(panel);
-    // On mobile, scroll to the tapped panel to show it fullscreen
-    if (!isDesktop) {
-      const target =
-        panel === 'collezione'
-          ? collezioneRef.current
-          : panel === 'suMisura'
-          ? suMisuraRef.current
-          : upcyclingRef.current;
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // On mobile, we now expand in place using height, without scrolling
   };
 
   // Navigazione CTA rimossa su richiesta
@@ -64,10 +79,11 @@ export default function Landing() {
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
-        className={`group relative h-screen overflow-hidden cursor-pointer transition-all duration-1000 ease-in-out flex-shrink-0 snap-start`}
+        className={`group relative h-screen overflow-hidden cursor-pointer transition-all duration-1000 ease-in-out flex-shrink-0`}
         style={{
           flexBasis: isDesktop ? basisFor(panel) : undefined,
-          transition: isDesktop ? 'flex-basis 1000ms ease-in-out' : undefined,
+          height: !isDesktop ? heightFor(panel) : undefined,
+          transition: isDesktop ? 'flex-basis 1000ms ease-in-out' : 'height 1000ms ease-in-out',
         }}
         onMouseEnter={() => {
           if (isDesktop) setActive(panel);
@@ -112,7 +128,7 @@ export default function Landing() {
             </div>
           </div>
         ) : (
-          isDesktop && (
+          isDesktop ? (
             <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6">
               <h2
                 className="text-3xl md:text-4xl font-semibold tracking-wide text-[#fffaf0] drop-shadow-md"
@@ -120,6 +136,10 @@ export default function Landing() {
               >
                 {title}
               </h2>
+            </div>
+          ) : (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4">
+              <h2 className="text-lg font-semibold tracking-wide text-[#fffaf0] drop-shadow-md">{title}</h2>
             </div>
           )
         )}
@@ -131,11 +151,27 @@ export default function Landing() {
 
   return (
     <div className="w-screen h-screen overflow-hidden">
+      {/* Logo top-center fisso, minimale, con fade-in */}
+      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+        {/* Barra full-width per massima leggibilità del logo */}
+        <div className={`w-full bg-gradient-to-r from-white/60 via-white/40 to-white/60 backdrop-blur-sm shadow-sm transition-opacity duration-700 ease-out ${showLogo ? 'opacity-100 logo-fade-in' : 'opacity-0'}`}>
+          <div className="flex items-center justify-center h-20 md:h-24 px-4">
+            <img
+              src={LogoSweetyLab}
+              alt="Sweety Lab — Sartoria artigianale"
+              className={`${isDesktop ? 'w-40' : 'w-32'} select-none`}
+              style={{ filter: logoFilter }}
+            />
+          </div>
+        </div>
+        {/* Heading SEO coerente, non invasivo */}
+        <h1 className="sr-only">Sweety Lab – Sartoria artigianale: Collezione, Su Misura, Upcycling</h1>
+      </header>
       {/* Pulsante di reset rimosso su richiesta */}
 
       {/* Panels container */}
       <div
-        className="flex w-full h-full md:flex-row flex-col snap-y md:snap-none snap-mandatory overflow-y-auto md:overflow-y-hidden overflow-x-hidden"
+        className="flex w-full h-full md:flex-row flex-col md:snap-none overflow-y-hidden overflow-x-hidden"
         onMouseLeave={() => {
           // Su desktop, al termine dell'hover, torna alla vista iniziale
           if (isDesktop) setActive('collezione');
