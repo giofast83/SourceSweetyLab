@@ -8,7 +8,8 @@ function Footer() {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <img src={logoSweetyLab} alt="SweetyLab" className="h-10 md:h-12 w-auto" />
+              {/* Allinea la dimensione del logo del footer a quella della Navbar (h-12 / md:h-16) */}
+              <img src={logoSweetyLab} alt="SweetyLab" className="h-12 md:h-16 w-auto" />
             </div>
             <p className="text-neutral-600 leading-relaxed">
               Atelier di abiti da sposa su misura. Creiamo il tuo sogno con passione e professionalità.
