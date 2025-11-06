@@ -12,22 +12,22 @@ import Landing from './pages/Landing';
 function AppContent() {
   const location = useLocation();
   // Nascondi Navbar/Footer sulla landing per avere la vera fullscreen
-  const isLanding = location.pathname === '/landing';
+  const isLanding = location.pathname === '/landing' || location.pathname === '/';
   return (
     <div className={'min-h-screen bg-white'}>
       {!isLanding && <Navbar />}
       <main>
         <ScrollToTop />
         <Routes>
-          {/* Home come pagina di default */}
-          <Route path="/" element={<Home />} />
+          {/* Landing come Home (pagina di default) */}
+          <Route path="/" element={<Landing />} />
           {/* La Home rimane raggiungibile su /home */}
           <Route path="/home" element={<Home />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/servizi" element={<Servizi />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/contatti" element={<Contatti />} />
-          {/* Nuova landing interattiva */}
+          {/* Alias: la landing resta raggiungibile anche su /landing */}
           <Route path="/landing" element={<Landing />} />
         </Routes>
       </main>
