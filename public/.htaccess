@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Permetti file e directory esistenti
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule - [L]
+
+  # Escludi gli endpoint backend (api) dal fallback SPA
+  RewriteCond %{REQUEST_URI} !^/api/
+
+  # Fallback SPA: instrada tutte le rotte al file index.html
+  RewriteRule . /index.html [L]
+</IfModule>
