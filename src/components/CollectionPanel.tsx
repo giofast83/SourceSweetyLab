@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 type CollectionPanelProps = {
   title: string;
@@ -9,8 +10,8 @@ type CollectionPanelProps = {
 
 export default function CollectionPanel({ title, subtitle, image, href }: CollectionPanelProps) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="group relative block w-full h-screen overflow-hidden focus:outline-none"
       aria-label={`Apri collezione: ${title}`}
     >
@@ -40,6 +41,6 @@ export default function CollectionPanel({ title, subtitle, image, href }: Collec
           </p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
