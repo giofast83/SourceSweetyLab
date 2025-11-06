@@ -51,9 +51,9 @@ export default function Landing() {
     <div className="h-screen w-screen overflow-hidden bg-black">
       {/* Logo con riga semitrasparente, poco staccata dall'alto e posizionata in alto a sinistra.
           La riga è leggermente più larga del logo (grazie al padding) e resta sovrapposta alle foto. */}
-      <div className="pointer-events-none fixed top-4 md:top-6 left-4 md:left-8 z-20">
+      <div className="pointer-events-none fixed top-4 md:top-6 left-4 md:left-0 md:right-0 z-20">
         <div className="relative">
-          <div className="inline-flex items-center justify-center bg-white/75 rounded-full h-16 md:h-20 px-4 md:px-6">
+          <div className="inline-flex md:flex items-center justify-center md:justify-start bg-white/75 rounded-full md:rounded-none h-16 md:h-20 px-4 md:px-8 w-auto md:w-full">
             <img
               src={logoSweetyLab}
               alt="SweetyLab"
