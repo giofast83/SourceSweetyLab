@@ -172,7 +172,11 @@ export default function Landing() {
         {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
         <div
           className={`pointer-events-none absolute -inset-[2px] bg-gradient-to-t from-black/70 via-black/50 to-transparent transition-opacity duration-500 ease-out will-change-opacity ${
-            isActiveVisual ? 'opacity-0' : 'opacity-100'
+            hasHover
+              ? 'opacity-100 group-hover:opacity-0'
+              : isActiveVisual
+              ? 'opacity-0'
+              : 'opacity-100'
           }`}
         />
 
