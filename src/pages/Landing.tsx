@@ -11,6 +11,10 @@ export default function Landing() {
   const [active, setActive] = useState<PanelKey>('collezione');
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
   const [showLogo, setShowLogo] = useState<boolean>(false);
+  // Dimensioni animate per i tre pannelli: desktop in percentuale, mobile in vh
+  const order: PanelKey[] = ['collezione', 'suMisura', 'upcycling'];
+  const [sizes, setSizes] = useState<number[]>([70, 15, 15]);
+  const animRef = useRef<number | null>(null);
 
   const collezioneRef = useRef<HTMLElement | null>(null);
   const suMisuraRef = useRef<HTMLElement | null>(null);
@@ -20,6 +24,8 @@ export default function Landing() {
     const mql = window.matchMedia('(min-width: 768px)');
     const update = () => setIsDesktop(mql.matches);
     update();
+    // Imposta dimensioni iniziali coerenti con il layout corrente
+    setSizes(getTargets('collezione', mql.matches));
     mql.addEventListener('change', update);
     const t = setTimeout(() => setShowLogo(true), 50);
     return () => {
@@ -28,31 +34,50 @@ export default function Landing() {
     };
   }, []);
 
-  const basisFor = (panel: PanelKey): string => {
-    // Initial layout when 'collezione' is active: 70% / 15% / 15%
-    if (active === 'collezione') {
-      if (panel === 'collezione') return '70%';
-      return '15%';
+  // Calcola i target in base al pannello attivo e al layout (desktop/mobile)
+  const getTargets = (nextActive: PanelKey, desktop: boolean): number[] => {
+    if (desktop) {
+      if (nextActive === 'collezione') return [70, 15, 15];
+      if (nextActive === 'suMisura') return [10, 80, 10];
+      return [10, 10, 80];
+    } else {
+      if (nextActive === 'collezione') return [70, 15, 15];
+      if (nextActive === 'suMisura') return [20, 70, 10];
+      return [20, 10, 70];
     }
-    // When a side panel is active: quasi fullscreen 80%, others as side panels 10% each
-    if (active === panel) return '80%';
-    return '10%';
   };
 
-  // Mobile heights to replicate desktop effect in vertical layout
-  const heightFor = (panel: PanelKey): string => {
-    // Mobile: layout verticale con overlay della barra sopra le immagini
-    // Stato iniziale: Collezione 70vh, altre 15vh
-    if (active === 'collezione') {
-      if (panel === 'collezione') return '70vh';
-      return '15vh';
+  // Easing morbida (easeOutCubic)
+  const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  // Anima dolcemente le dimensioni verso i target
+  const animateToTargets = (targets: number[], duration = 2200) => {
+    if (animRef.current) {
+      cancelAnimationFrame(animRef.current);
+      animRef.current = null;
     }
-    // Stato attivo (Su Misura o Upcycling):
-    // sezione attiva 70vh, Collezione chiusa ma più alta in alto (20vh), altra chiusa 10vh
-    if (active === panel) return '70vh';
-    if (panel === 'collezione') return '20vh';
-    return '10vh';
+    const start = performance.now();
+    const from = sizes.slice();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = easeOutCubic(t);
+      const next = from.map((v, i) => v + (targets[i] - v) * eased);
+      setSizes(next);
+      if (t < 1) {
+        animRef.current = requestAnimationFrame(step);
+      } else {
+        animRef.current = null;
+      }
+    };
+    animRef.current = requestAnimationFrame(step);
   };
+
+  // Reagisce ai cambi di pannello attivo o layout
+  useEffect(() => {
+    const targets = getTargets(active, isDesktop);
+    animateToTargets(targets, 2200);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, isDesktop]);
 
   // Logo sempre nero, monocromatico
   const logoFilter = 'saturate(0) brightness(0)';
@@ -79,11 +104,12 @@ export default function Landing() {
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
-        className={`group relative h-screen overflow-hidden cursor-pointer transition-all duration-1000 ease-in-out flex-shrink-0`}
+        className={`group relative h-screen overflow-hidden cursor-pointer flex-shrink-0`}
         style={{
-          flexBasis: isDesktop ? basisFor(panel) : undefined,
-          height: !isDesktop ? heightFor(panel) : undefined,
-          transition: isDesktop ? 'flex-basis 1000ms ease-in-out' : 'height 1000ms ease-in-out',
+          // Dimensioni pilotate via animazione JS per compatibilità cross-browser
+          width: isDesktop ? `${sizes[order.indexOf(panel)]}%` : undefined,
+          height: !isDesktop ? `${sizes[order.indexOf(panel)]}vh` : undefined,
+          willChange: isDesktop ? ('width' as any) : ('height' as any),
         }}
         onMouseEnter={() => {
           if (isDesktop) setActive(panel);
@@ -103,12 +129,12 @@ export default function Landing() {
         <img
           src={img}
           alt={title}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out will-change-transform hover:scale-105 hover:brightness-110`}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform hover:scale-105 hover:brightness-110`}
         />
 
         {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
         <div
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-[1800ms] ease-in-out ${
             isActive
               ? 'bg-gradient-to-t from-black/25 via-black/15 to-transparent'
               : 'bg-gradient-to-t from-black/70 via-black/50 to-transparent group-hover:from-black/40 group-hover:via-black/25 group-hover:to-transparent'
@@ -118,9 +144,9 @@ export default function Landing() {
         {/* Testo: se attivo, orizzontale con titolo + sottotitolo; se chiuso su desktop, titolo verticale */}
         {isActive ? (
           <div className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0]`}>
-            <div className="px-6 md:px-10 transition-opacity duration-1000 ease-in-out">
+            <div className="px-6 md:px-10 transition-opacity duration-[1800ms] ease-in-out">
               <h2 className="text-3xl md:text-5xl font-semibold tracking-wide opacity-100 drop-shadow-lg">{title}</h2>
-              <p className="mt-3 text-sm md:text-base max-w-xl transition-opacity duration-1000 ease-in-out opacity-100 drop-shadow">
+              <p className="mt-3 text-sm md:text-base max-w-xl transition-opacity duration-[1800ms] ease-in-out opacity-100 drop-shadow">
                 {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
                 {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
                 {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
