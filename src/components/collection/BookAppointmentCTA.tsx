@@ -22,3 +22,4 @@ export default function BookAppointmentCTA({ text = 'Scopri la collezione da vic
     </section>
   );
 }
+

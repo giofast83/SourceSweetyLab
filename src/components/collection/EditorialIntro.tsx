@@ -41,3 +41,4 @@ export default function EditorialIntro({ children }: EditorialIntroProps) {
     </section>
   );
 }
+

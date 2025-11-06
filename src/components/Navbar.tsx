@@ -26,19 +26,13 @@ import logoSweetyLab from '../assets/Logo_SweetyLab.png';
     const onScroll = () => {
       const y = window.scrollY || 0;
       const delta = y - lastYRef.current;
-      const isCoarse = window.matchMedia('(pointer: coarse)').matches; // mobile/touch
       // Manteniamo lo stato per eventuali usi futuri
       setScrolled(y > 40);
-      // Logica mobile ottimizzata: nascosta al load; mostra appena c'è scroll verso l'alto
-      const hideDownThreshold = isCoarse ? 16 : 20;
-      const showUpThreshold = isCoarse ? -4 : -10; // su mobile basta un piccolo scroll verso l'alto
-
-      if (y <= 10) {
+      // Richiesta: al load nascosta; quando si inizia a scrollare rapidamente, compare
+      if (y < 10) {
         setShowBar(false);
-      } else if (delta <= showUpThreshold) {
+      } else if (Math.abs(delta) > 25) {
         setShowBar(true);
-      } else if (delta >= hideDownThreshold) {
-        setShowBar(false);
       }
       lastYRef.current = y;
     };
@@ -63,7 +57,7 @@ import logoSweetyLab from '../assets/Logo_SweetyLab.png';
   return (
     <>
       <nav
-        className={`fixed w-full top-0 z-50 transition-transform duration-300 ease-out will-change-transform ${showBar ? 'translate-y-0' : '-translate-y-[120%]'}`}
+        className={`fixed w-full top-0 z-50 transition-transform duration-300 ease-out ${showBar ? 'translate-y-0' : '-translate-y-full'}`}
         aria-label="Main Navigation"
       >
         <div className="bg-cipria-50/80">

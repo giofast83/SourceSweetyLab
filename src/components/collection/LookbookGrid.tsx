@@ -23,3 +23,4 @@ export default function LookbookGrid({ images }: LookbookGridProps) {
     </section>
   );
 }
+

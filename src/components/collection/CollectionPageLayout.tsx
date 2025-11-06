@@ -13,3 +13,4 @@ export default function CollectionPageLayout({ children, className = '' }: Props
     </div>
   );
 }
+
