@@ -104,12 +104,16 @@ export default function Landing() {
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
-        className={`group relative h-screen overflow-hidden cursor-pointer flex-shrink-0`}
+        className={`group relative h-screen overflow-hidden cursor-pointer flex-shrink-0 transform-gpu`}
         style={{
           // Dimensioni pilotate via animazione JS per compatibilità cross-browser
           width: isDesktop ? `${sizes[order.indexOf(panel)]}%` : undefined,
           height: !isDesktop ? `${sizes[order.indexOf(panel)]}vh` : undefined,
-          willChange: isDesktop ? ('width' as any) : ('height' as any),
+          // Migliora la composizione su Safari/iOS evitando sfarfallii
+          // Usa layer GPU e limita il raggio di repaint
+          transform: 'translate3d(0,0,0)',
+          backfaceVisibility: 'hidden' as any,
+          contain: 'layout paint style size',
         }}
         onMouseEnter={() => {
           if (isDesktop) setActive(panel);
@@ -129,16 +133,19 @@ export default function Landing() {
         <img
           src={img}
           alt={title}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform hover:scale-105 hover:brightness-110`}
+          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[1800ms] ease-in-out transform-gpu hover:scale-105 hover:brightness-110`}
+          style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden' as any,
+            willChange: 'transform',
+            objectPosition: 'center',
+          }}
         />
 
-        {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
+        {/* Overlay: usa un gradiente costante e varia SOLO l'opacità per evitare flicker su Safari */}
         <div
-          className={`absolute inset-0 transition-opacity duration-[1800ms] ease-in-out ${
-            isActive
-              ? 'bg-gradient-to-t from-black/25 via-black/15 to-transparent'
-              : 'bg-gradient-to-t from-black/70 via-black/50 to-transparent group-hover:from-black/40 group-hover:via-black/25 group-hover:to-transparent'
-          }`}
+          className={`absolute inset-0 transition-opacity duration-[1800ms] ease-in-out bg-gradient-to-t from-black via-black to-transparent pointer-events-none`}
+          style={{ opacity: isActive ? 0.28 : 0.55 }}
         />
 
         {/* Testo: se attivo, orizzontale con titolo + sottotitolo; se chiuso su desktop, titolo verticale */}
