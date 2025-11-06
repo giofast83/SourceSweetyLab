@@ -51,18 +51,25 @@ export default function Landing() {
   const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
   // Anima dolcemente le dimensioni verso i target
-  const animateToTargets = (targets: number[], duration = 2200) => {
+  // Throttling degli aggiornamenti per ridurre i reflow (Safari): limita a ~30fps
+  const animateToTargets = (targets: number[], duration = 2200, fps = 30) => {
     if (animRef.current) {
       cancelAnimationFrame(animRef.current);
       animRef.current = null;
     }
     const start = performance.now();
     const from = sizes.slice();
+    const frameInterval = 1000 / Math.max(1, fps);
+    let lastUpdate = 0; // timestamp dell'ultimo aggiornamento visivo
     const step = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
-      const eased = easeOutCubic(t);
-      const next = from.map((v, i) => v + (targets[i] - v) * eased);
-      setSizes(next);
+      const shouldUpdate = lastUpdate === 0 || now - lastUpdate >= frameInterval || t >= 1;
+      if (shouldUpdate) {
+        const eased = easeOutCubic(t);
+        const next = from.map((v, i) => v + (targets[i] - v) * eased);
+        setSizes(next);
+        lastUpdate = now;
+      }
       if (t < 1) {
         animRef.current = requestAnimationFrame(step);
       } else {
