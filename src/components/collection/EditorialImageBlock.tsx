@@ -31,8 +31,8 @@ export default function EditorialImageBlock({ image, title, text, align = 'left'
       <img
         src={image}
         alt={title || 'Editorial Block'}
-        className="absolute inset-x-0 -inset-y-2 w-full h-full object-cover will-change-transform"
-        style={{ transform: `translateY(${offset}px) scale(1.03)` }}
+        className="absolute inset-x-0 -inset-y-4 w-full h-full object-cover will-change-transform"
+        style={{ transform: `translateY(${offset}px) scale(1.06)` }}
       />
       <div className="absolute inset-0 bg-black/20" />
       {align !== 'full' && (

@@ -15,7 +15,7 @@ export default function HeroSection({ title, subtitle, image }: HeroSectionProps
   }, []);
 
   return (
-    <section className="relative w-full h-screen">
+    <section className="relative w-full h-screen overflow-hidden">
       {/* Immagine fullscreen con ken burns lento (scala leggera on mount) */}
       <img
         src={image}
