@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -7,24 +7,34 @@ import ChiSiamo from './pages/ChiSiamo';
 import Servizi from './pages/Servizi';
 import PortfolioPage from './pages/PortfolioPage';
 import Contatti from './pages/Contatti';
+import Landing from './pages/Landing';
+
+function AppContent() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/landing';
+  return (
+    <div className={isLanding ? 'min-h-screen' : 'min-h-screen bg-white'}>
+      {!isLanding && <Navbar />}
+      <main>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/chi-siamo" element={<ChiSiamo />} />
+          <Route path="/servizi" element={<Servizi />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/contatti" element={<Contatti />} />
+          <Route path="/landing" element={<Landing />} />
+        </Routes>
+      </main>
+      {!isLanding && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-white">
-        <Navbar />
-        <main>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/chi-siamo" element={<ChiSiamo />} />
-            <Route path="/servizi" element={<Servizi />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/contatti" element={<Contatti />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AppContent />
     </Router>
   );
 }
