@@ -167,7 +167,7 @@ export default function Landing() {
           <>
             {/* Titolo + sottotitolo desktop (solo quando attivo) */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity duration-500 ease-out z-20 ${
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity duration-150 ease-out z-20 ${
                 hasHover
                   ? isActive
                     ? 'opacity-100'
@@ -189,7 +189,7 @@ export default function Landing() {
 
             {/* ✅ Titolo verticale ridotto SOLO su desktop */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-500 ease-out z-20 ${
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-150 ease-out z-20 ${
                 hasHover
                   ? isActive
                     ? 'opacity-0'

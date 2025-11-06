@@ -194,10 +194,12 @@
       transform: translateZ(0);
       backface-visibility: hidden;
     }
+    /* Stato iniziale: collezione al 70% */
     .panels .panel[data-panel="collezione"] {
-      /* stato iniziale: collezione al 70% */
       flex-basis: 70%;
     }
+    /* Rimuovo lo stato iniziale "attivo" della collezione: all'avvio i pannelli hanno ripartizione uniforme,
+       saranno espansi solo al passaggio del mouse */
     .panels:hover .panel:hover {
       /* pannello sotto hover: espansione al 80% */
       flex-basis: 80%;
