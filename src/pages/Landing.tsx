@@ -9,7 +9,8 @@ type PanelKey = 'collezione' | 'suMisura' | 'upcycling';
 export default function Landing() {
   // Active panel: default to 'collezione'
   const [active, setActive] = useState<PanelKey>('collezione');
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  const [isRowLayout, setIsRowLayout] = useState<boolean>(true); // layout orizzontale da md:768+
+  const [hasHover, setHasHover] = useState<boolean>(false); // dispositivo con hover/puntatore fine
   const [showLogo, setShowLogo] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
@@ -19,10 +20,14 @@ export default function Landing() {
   const upcyclingRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const mql = window.matchMedia('(min-width: 768px)');
-    const update = () => setIsDesktop(mql.matches);
-    update();
-    mql.addEventListener('change', update);
+    const mqRow = window.matchMedia('(min-width: 768px)');
+    const mqHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const updateLayout = () => setIsRowLayout(mqRow.matches);
+    const updateHover = () => setHasHover(mqHover.matches);
+    updateLayout();
+    updateHover();
+    mqRow.addEventListener('change', updateLayout);
+    mqHover.addEventListener('change', updateHover);
     const updateSize = () => {
       const rect = containerRef.current?.getBoundingClientRect();
       setContainerSize({
@@ -34,7 +39,8 @@ export default function Landing() {
     window.addEventListener('resize', updateSize);
     const t = setTimeout(() => setShowLogo(true), 50);
     return () => {
-      mql.removeEventListener('change', update);
+      mqRow.removeEventListener('change', updateLayout);
+      mqHover.removeEventListener('change', updateHover);
       window.removeEventListener('resize', updateSize);
       clearTimeout(t);
     };
@@ -95,7 +101,7 @@ export default function Landing() {
 
   const handleClick = (panel: PanelKey) => {
     setActive(panel);
-    // On mobile, we now expand in place using height, without scrolling
+    // Su dispositivi senza hover, usiamo click/touch per attivare il pannello
   };
 
   // Navigazione CTA rimossa su richiesta
@@ -118,21 +124,25 @@ export default function Landing() {
         className={`group panel relative h-screen overflow-hidden cursor-pointer`}
         data-panel={panel}
         style={{
-          // Desktop: layout/animazione gestiti in CSS tramite :hover (vedi index.css)
-          // Mobile: animiamo altezza in pixel (derivata dall’altezza del contenitore).
-          height: !isDesktop ? heightPxFor(panel) : undefined,
-          // Transizione solo per mobile
-          transition: !isDesktop ? 'height 2200ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
-          willChange: !isDesktop ? ('height' as any) : undefined,
+          // Layout verticale (mobile/schermi piccoli): animiamo altezza in pixel
+          height: !isRowLayout ? heightPxFor(panel) : undefined,
+          transition: !isRowLayout ? 'height 2200ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+          willChange: !isRowLayout ? ('height' as any) : undefined,
+          // Layout orizzontale su dispositivi senza hover: animiamo flex-basis via JS
+          flex: isRowLayout && !hasHover ? ('1 0 auto' as any) : undefined,
+          flexBasis: isRowLayout && !hasHover ? widthPxFor(panel) : undefined,
+          transitionProperty: isRowLayout && !hasHover ? ('flex-basis' as any) : undefined,
+          transitionDuration: isRowLayout && !hasHover ? '2200ms' : undefined,
+          transitionTimingFunction: isRowLayout && !hasHover ? 'cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
         }}
         onMouseEnter={() => {
-          // Desktop: espansione gestita via CSS :hover, non serve JS
-          if (isDesktop) return;
-          setActive(panel);
+          // Se c'è hover, l'espansione è gestita dal CSS :hover; altrimenti non facciamo nulla
+          if (hasHover) return;
+          // Senza hover, preferiamo il click/touch per attivare
         }}
         onClick={(e) => {
-          // Su desktop non è richiesto il click per espandere
-          if (!isDesktop) handleClick(panel);
+          // Su dispositivi senza hover usiamo il click/touch per attivare il pannello
+          if (!hasHover) handleClick(panel);
         }}
         aria-label={title}
         role="button"
@@ -175,7 +185,7 @@ export default function Landing() {
             </div>
           </div>
         ) : (
-          isDesktop ? (
+          isRowLayout ? (
             <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6">
               <h2
                 className="text-3xl md:text-4xl font-semibold tracking-wide text-[#fffaf0] drop-shadow-md"
@@ -206,7 +216,7 @@ export default function Landing() {
             <img
               src={LogoSweetyLab}
               alt="Sweety Lab — Sartoria artigianale"
-              className={`${isDesktop ? 'w-40' : 'w-32'} select-none`}
+              className={`${isRowLayout ? 'w-40' : 'w-32'} select-none`}
               style={{ filter: logoFilter }}
             />
           </div>
@@ -221,8 +231,8 @@ export default function Landing() {
         ref={containerRef}
         className="panels flex w-full h-full md:flex-row flex-col md:snap-none overflow-y-hidden overflow-x-hidden"
         onMouseLeave={() => {
-          // Su desktop, al termine dell'hover, torna alla vista iniziale
-          if (isDesktop) setActive('collezione');
+          // Su dispositivi con hover, al termine dell'hover, torna alla vista iniziale
+          if (hasHover) setActive('collezione');
         }}
       >
         <Panel panel="collezione" title="Collezione" img={imgCollezione} sectionRef={collezioneRef} />
