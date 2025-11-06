@@ -7,13 +7,16 @@ import LogoSweetyLab from '../assets/Logo_SweetyLab.png';
 type PanelKey = 'collezione' | 'suMisura' | 'upcycling';
 
 export default function Landing() {
-  // Active panel: default to 'collezione'
   const [active, setActive] = useState<PanelKey>('collezione');
-  const [isRowLayout, setIsRowLayout] = useState<boolean>(true); // layout orizzontale da md:768+
-  const [hasHover, setHasHover] = useState<boolean>(false); // dispositivo con hover/puntatore fine
+  const [isRowLayout, setIsRowLayout] = useState<boolean>(true);
+  const [hasHover, setHasHover] = useState<boolean>(false);
   const [showLogo, setShowLogo] = useState<boolean>(false);
+
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
 
   const collezioneRef = useRef<HTMLElement | null>(null);
   const suMisuraRef = useRef<HTMLElement | null>(null);
@@ -22,12 +25,16 @@ export default function Landing() {
   useEffect(() => {
     const mqRow = window.matchMedia('(min-width: 768px)');
     const mqHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
     const updateLayout = () => setIsRowLayout(mqRow.matches);
     const updateHover = () => setHasHover(mqHover.matches);
+
     updateLayout();
     updateHover();
+
     mqRow.addEventListener('change', updateLayout);
     mqHover.addEventListener('change', updateHover);
+
     const updateSize = () => {
       const rect = containerRef.current?.getBoundingClientRect();
       setContainerSize({
@@ -35,9 +42,12 @@ export default function Landing() {
         height: rect?.height ?? window.innerHeight,
       });
     };
+
     updateSize();
     window.addEventListener('resize', updateSize);
+
     const t = setTimeout(() => setShowLogo(true), 50);
+
     return () => {
       mqRow.removeEventListener('change', updateLayout);
       mqHover.removeEventListener('change', updateHover);
@@ -46,7 +56,6 @@ export default function Landing() {
     };
   }, []);
 
-  // Desktop ora gestito via CSS puro (hover); questa funzione non è più usata per desktop
   const basisFor = (panel: PanelKey): string => {
     if (active === 'collezione') {
       if (panel === 'collezione') return '70%';
@@ -56,10 +65,9 @@ export default function Landing() {
     return '10%';
   };
 
-  // Versione in pixel per assicurare animazioni affidabili su tutti i browser
   const widthPxFor = (panel: PanelKey): string => {
     const w = containerSize.width;
-    if (!w) return basisFor(panel); // fallback percentuale finché non misuriamo
+    if (!w) return basisFor(panel);
     if (active === 'collezione') {
       if (panel === 'collezione') return `${Math.round(w * 0.7)}px`;
       return `${Math.round(w * 0.15)}px`;
@@ -70,7 +78,8 @@ export default function Landing() {
 
   const heightPxFor = (panel: PanelKey): string => {
     const h = containerSize.height;
-    if (!h) return heightFor(panel); // fallback finché non misuriamo
+    if (!h) return heightFor(panel);
+
     if (active === 'collezione') {
       if (panel === 'collezione') return `${Math.round(h * 0.7)}px`;
       return `${Math.round(h * 0.15)}px`;
@@ -80,31 +89,21 @@ export default function Landing() {
     return `${Math.round(h * 0.1)}px`;
   };
 
-
-  // Mobile heights to replicate desktop effect in vertical layout
   const heightFor = (panel: PanelKey): string => {
-    // Mobile: layout verticale con overlay della barra sopra le immagini
-    // Stato iniziale: Collezione 70vh, altre 15vh
     if (active === 'collezione') {
       if (panel === 'collezione') return '70vh';
       return '15vh';
     }
-    // Stato attivo (Su Misura o Upcycling):
-    // sezione attiva 70vh, Collezione chiusa ma più alta in alto (20vh), altra chiusa 10vh
     if (active === panel) return '70vh';
     if (panel === 'collezione') return '20vh';
     return '10vh';
   };
 
-  // Logo sempre nero, monocromatico
   const logoFilter = 'saturate(0) brightness(0)';
 
   const handleClick = (panel: PanelKey) => {
     setActive(panel);
-    // Su dispositivi senza hover, usiamo click/touch per attivare il pannello
   };
-
-  // Navigazione CTA rimossa su richiesta
 
   const Panel = ({
     panel,
@@ -118,80 +117,69 @@ export default function Landing() {
     sectionRef: MutableRefObject<HTMLElement | null>;
   }) => {
     const isActive = active === panel;
-    // Visual: niente bianco e nero. Solo overlay sui pannelli chiusi (non attivi).
-    const isActiveVisual = isActive;
+
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
-        className={`group panel relative h-screen overflow-hidden cursor-pointer`}
+        className="group panel relative h-screen overflow-hidden cursor-pointer"
         data-panel={panel}
         style={{
-          // Layout verticale (mobile/schermi piccoli): animiamo altezza in pixel e rendiamo più reattivo lo slide
           height: !isRowLayout ? heightPxFor(panel) : undefined,
           transition: !isRowLayout ? 'height 800ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
-          willChange: !isRowLayout ? ('height' as any) : undefined,
-          // Layout orizzontale su dispositivi senza hover: animiamo flex-basis via JS
           flex: isRowLayout && !hasHover ? ('1 0 auto' as any) : undefined,
           flexBasis: isRowLayout && !hasHover ? widthPxFor(panel) : undefined,
           transitionProperty: isRowLayout && !hasHover ? ('flex-basis' as any) : undefined,
           transitionDuration: isRowLayout && !hasHover ? '2200ms' : undefined,
           transitionTimingFunction: isRowLayout && !hasHover ? 'cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
         }}
-        onMouseEnter={() => {
-          // Se c'è hover, l'espansione è gestita dal CSS :hover; altrimenti non facciamo nulla
-          if (hasHover) return;
-          // Senza hover, preferiamo il click/touch per attivare
+        onClick={() => {
+          // Consenti sempre la selezione via click/touch, anche su dispositivi che riportano hover
+          handleClick(panel);
         }}
-        onClick={(e) => {
-          // Su dispositivi senza hover usiamo il click/touch per attivare il pannello
-          if (!hasHover) handleClick(panel);
-        }}
-        onTouchStart={(e) => {
-          // Assicura che il tap attivi il pannello immediatamente su mobile
-          if (!hasHover) handleClick(panel);
-        }}
-        aria-label={title}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleClick(panel);
+        onTouchStart={() => {
+          handleClick(panel);
         }}
       >
-        {/* Image */}
+        {/* Immagine */}
         <img
           src={img}
           alt={title}
-          className={`absolute -inset-[2px] w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform ${
-            isActiveVisual ? 'animate-ken-burns-slow' : ''
+          className={`absolute -inset-[2px] w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform z-0 ${
+            isActive ? 'animate-ken-burns-slow' : ''
           }`}
-          style={{
-            objectPosition: 'center',
-          }}
         />
 
-        {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
+        {/* Overlay */}
         <div
-          className={`pointer-events-none absolute -inset-[2px] bg-gradient-to-t from-black/70 via-black/50 to-transparent transition-opacity duration-500 ease-out will-change-opacity ${
+          className={`pointer-events-none absolute -inset-[2px] bg-gradient-to-t from-black/70 via-black/50 to-transparent transition-opacity duration-500 ease-out will-change-opacity z-10 ${
             hasHover
-              ? 'opacity-100 group-hover:opacity-0'
-              : isActiveVisual
+              ? isActive
+                ? 'opacity-0'
+                : 'opacity-100 group-hover:opacity-0'
+              : isActive
               ? 'opacity-0'
               : 'opacity-100'
           }`}
         />
 
-        {/* Testi: gestione uniforme per desktop (hover) e mobile (stato attivo) */}
-        {isRowLayout ? (
+        {/* ✅ ✅ TESTI DESKTOP */}
+        {isRowLayout && (
           <>
-            {/* Blocco ATTIVO: orizzontale con sottotitolo */}
+            {/* Titolo + sottotitolo desktop (solo quando attivo) */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity duration-500 ease-out ${
-                hasHover ? 'opacity-0 group-hover:opacity-100' : isActive ? 'opacity-100' : 'opacity-0'
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity duration-500 ease-out z-20 ${
+                hasHover
+                  ? isActive
+                    ? 'opacity-100'
+                    : 'opacity-0 group-hover:opacity-100'
+                  : isActive
+                  ? 'opacity-100'
+                  : 'opacity-0'
               }`}
             >
               <div className="px-6 md:px-10">
-                <h2 className="text-3xl md:text-5xl font-semibold tracking-wide drop-shadow-lg">{title}</h2>
-                <p className="mt-3 text-sm md:text-base max-w-xl opacity-100 drop-shadow">
+                <h2 className="text-3xl md:text-5xl font-semibold tracking-wide text-shadow-strong">{title}</h2>
+                <p className="mt-3 text-sm md:text-base max-w-xl text-shadow-strong-sm">
                   {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
                   {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
                   {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
@@ -199,10 +187,16 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Blocco RIDOTTO: verticale senza sottotitolo */}
+            {/* ✅ Titolo verticale ridotto SOLO su desktop */}
             <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-500 ease-out ${
-                hasHover ? 'opacity-100 group-hover:opacity-0' : isActive ? 'opacity-0' : 'opacity-100'
+              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 md:pr-6 transition-opacity duration-500 ease-out z-20 ${
+                hasHover
+                  ? isActive
+                    ? 'opacity-0'
+                    : 'opacity-100 group-hover:opacity-0'
+                  : isActive
+                  ? 'opacity-0'
+                  : 'opacity-100'
               }`}
             >
               <h2
@@ -213,46 +207,44 @@ export default function Landing() {
               </h2>
             </div>
           </>
-        ) : (
-          <>
-            {/* Mobile ATTIVO: orizzontale con sottotitolo */}
-            <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-[#fffaf0] transition-opacity transition-transform duration-500 ease-out transform will-change-transform ${
-                isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-              }`}
-            >
-              <div className="px-6">
-                <h2 className="text-2xl font-semibold tracking-wide drop-shadow-lg">{title}</h2>
-                <p className="mt-2 text-xs max-w-xs opacity-100 drop-shadow">
-                  {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
-                  {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
-                  {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
-                </p>
-              </div>
-            </div>
-
-            {/* Mobile RIDOTTO: titolo piccolo orizzontale, senza sottotitolo */}
-            <div
-              className={`pointer-events-none absolute inset-0 flex items-center justify-end pr-4 transition-opacity transition-transform duration-500 ease-out transform will-change-transform ${
-                isActive ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
-              }`}
-            >
-              <h2 className="text-lg font-semibold tracking-wide text-[#fffaf0] drop-shadow-md">{title}</h2>
-            </div>
-          </>
         )}
 
-        {/* CTA rimossa su richiesta */}
+        {/* ✅ ✅ TESTI MOBILE */}
+        {!isRowLayout && (
+          <div
+            className={`pointer-events-none absolute inset-0 flex items-center justify-end text-right text-white transition-opacity transition-transform duration-500 ease-out z-50 ${
+              isActive ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-2'
+            }`}
+          >
+            <div className="px-6 py-4">
+              <h2 className="text-2xl font-semibold tracking-wide text-shadow-strong">{title}</h2>
+
+              {/* ✅ Sottotitolo mobile appare SOLO quando attivo */}
+              <p
+                className={`mt-2 text-sm leading-snug max-w-xs transition-opacity duration-300 text-shadow-strong-sm ${
+                  isActive ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                {panel === 'collezione' && 'Mini collezioni a tiratura limitata'}
+                {panel === 'suMisura' && 'Il tuo abito, creato solo per te'}
+                {panel === 'upcycling' && 'Trasforma e rinnova i tuoi capi'}
+              </p>
+            </div>
+          </div>
+        )}
       </section>
     );
   };
 
   return (
     <div className="w-screen h-screen overflow-hidden">
-      {/* Logo top-center fisso, minimale, con fade-in */}
+      {/* Logo */}
       <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        {/* Barra full-width per massima leggibilità del logo */}
-        <div className={`w-full bg-gradient-to-r from-white/60 via-white/40 to-white/60 backdrop-blur-sm shadow-sm transition-opacity duration-700 ease-out ${showLogo ? 'opacity-100 logo-fade-in' : 'opacity-0'}`}>
+        <div
+          className={`w-full bg-gradient-to-r from-white/60 via-white/40 to-white/60 backdrop-blur-sm shadow-sm transition-opacity duration-700 ease-out ${
+            showLogo ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <div className="flex items-center justify-center h-20 md:h-24 px-4">
             <img
               src={LogoSweetyLab}
@@ -262,17 +254,15 @@ export default function Landing() {
             />
           </div>
         </div>
-        {/* Heading SEO coerente, non invasivo */}
-        <h1 className="sr-only">Sweety Lab – Sartoria artigianale: Collezione, Su Misura, Upcycling</h1>
+        <h1 className="sr-only">
+          Sweety Lab – Sartoria artigianale: Collezione, Su Misura, Upcycling
+        </h1>
       </header>
-      {/* Pulsante di reset rimosso su richiesta */}
 
-      {/* Panels container */}
       <div
         ref={containerRef}
-        className="panels flex w-full h-full md:flex-row flex-col md:snap-none overflow-y-hidden overflow-x-hidden"
+        className="panels flex w-full h-full md:flex-row flex-col overflow-y-hidden overflow-x-hidden"
         onMouseLeave={() => {
-          // Su dispositivi con hover, al termine dell'hover, torna alla vista iniziale
           if (hasHover) setActive('collezione');
         }}
       >

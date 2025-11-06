@@ -147,6 +147,18 @@
     letter-spacing: -0.01em;
   }
 
+  /* Ombre di testo più forti per massima leggibilità su immagini chiare */
+  .text-shadow-strong {
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.8),
+      0 6px 18px rgba(0, 0, 0, 0.6);
+  }
+  .text-shadow-strong-sm {
+    text-shadow:
+      0 1px 4px rgba(0, 0, 0, 0.7),
+      0 3px 12px rgba(0, 0, 0, 0.5);
+  }
+
   /* Layout pannelli Landing (CSS-only solo su dispositivi con hover/pointer fine) */
   @media (hover: hover) and (pointer: fine) {
     .panels {
