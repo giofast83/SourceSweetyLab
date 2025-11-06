@@ -72,6 +72,19 @@
     animation: ken-burns 8s ease-out infinite alternate;
   }
 
+  /* Variante lenta per Landing (più cinematica) */
+  .animate-ken-burns-slow {
+    animation: ken-burns 16s ease-out infinite alternate;
+  }
+
+  /* Accessibilità: riduce o elimina le animazioni se l’utente preferisce meno movimento */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-ken-burns,
+    .animate-ken-burns-slow {
+      animation: none !important;
+    }
+  }
+
   /* Galleria autoscorrevole (marquee) */
   @keyframes marquee {
     0% {
@@ -132,5 +145,54 @@
     font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
     line-height: 1.2;
     letter-spacing: -0.01em;
+  }
+
+  /* Layout pannelli Landing (CSS-only per desktop) */
+  @media (min-width: 768px) {
+    .panels {
+      /* il container dei pannelli */
+      background-color: transparent; /* rimuovo lo sfondo nero del container per evitare la “quarta sezione” visiva */
+      gap: 0; /* nessuno spazio tra i pannelli */
+    }
+    .panels .panel {
+      /* base desktop: ripartizione proporzionale, animabile; flex-grow 1 elimina eventuali gap da arrotondamento */
+      flex: 1 0 auto;
+      flex-basis: 15%;
+      transition: flex-basis 2200ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: flex-basis;
+      /* prevenzione flicker/alone su Safari/Chrome con filter/transform */
+      background-color: transparent; /* nessun bordo/alone scuro visibile attorno al pannello */
+      contain: paint; /* isola la pittura del pannello */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      margin-right: -1px; /* sovrappone leggermente i pannelli per evitare linee da arrotondamento */
+      position: relative; /* consente z-index per l’hover */
+      outline: 1px solid transparent; /* forza l’anti-aliasing per prevenire hairlines */
+    }
+    .panels .panel:last-child {
+      margin-right: 0; /* nessuna sovrapposizione sull’ultimo pannello per evitare tagli sul bordo destro */
+    }
+    .panels .panel:not(:first-child) {
+      margin-left: -1px; /* sovrapposizione simmetrica anche sul bordo sinistro dei pannelli 2 e 3 */
+    }
+    .panels .panel:hover {
+      z-index: 2; /* il pannello al hover sta sopra nella sovrapposizione */
+    }
+    .panels .panel > img {
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+    .panels .panel[data-panel="collezione"] {
+      /* stato iniziale: collezione al 70% */
+      flex-basis: 70%;
+    }
+    .panels:hover .panel:hover {
+      /* pannello sotto hover: espansione al 80% */
+      flex-basis: 80%;
+    }
+    .panels:hover .panel:not(:hover) {
+      /* pannelli non attivi: laterali stretti */
+      flex-basis: 10%;
+    }
   }
 }

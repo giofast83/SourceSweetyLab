@@ -11,6 +11,8 @@ export default function Landing() {
   const [active, setActive] = useState<PanelKey>('collezione');
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
   const [showLogo, setShowLogo] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
 
   const collezioneRef = useRef<HTMLElement | null>(null);
   const suMisuraRef = useRef<HTMLElement | null>(null);
@@ -21,23 +23,57 @@ export default function Landing() {
     const update = () => setIsDesktop(mql.matches);
     update();
     mql.addEventListener('change', update);
+    const updateSize = () => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      setContainerSize({
+        width: rect?.width ?? window.innerWidth,
+        height: rect?.height ?? window.innerHeight,
+      });
+    };
+    updateSize();
+    window.addEventListener('resize', updateSize);
     const t = setTimeout(() => setShowLogo(true), 50);
     return () => {
       mql.removeEventListener('change', update);
+      window.removeEventListener('resize', updateSize);
       clearTimeout(t);
     };
   }, []);
 
+  // Desktop ora gestito via CSS puro (hover); questa funzione non è più usata per desktop
   const basisFor = (panel: PanelKey): string => {
-    // Initial layout when 'collezione' is active: 70% / 15% / 15%
     if (active === 'collezione') {
       if (panel === 'collezione') return '70%';
       return '15%';
     }
-    // When a side panel is active: quasi fullscreen 80%, others as side panels 10% each
     if (active === panel) return '80%';
     return '10%';
   };
+
+  // Versione in pixel per assicurare animazioni affidabili su tutti i browser
+  const widthPxFor = (panel: PanelKey): string => {
+    const w = containerSize.width;
+    if (!w) return basisFor(panel); // fallback percentuale finché non misuriamo
+    if (active === 'collezione') {
+      if (panel === 'collezione') return `${Math.round(w * 0.7)}px`;
+      return `${Math.round(w * 0.15)}px`;
+    }
+    if (active === panel) return `${Math.round(w * 0.8)}px`;
+    return `${Math.round(w * 0.1)}px`;
+  };
+
+  const heightPxFor = (panel: PanelKey): string => {
+    const h = containerSize.height;
+    if (!h) return heightFor(panel); // fallback finché non misuriamo
+    if (active === 'collezione') {
+      if (panel === 'collezione') return `${Math.round(h * 0.7)}px`;
+      return `${Math.round(h * 0.15)}px`;
+    }
+    if (active === panel) return `${Math.round(h * 0.7)}px`;
+    if (panel === 'collezione') return `${Math.round(h * 0.2)}px`;
+    return `${Math.round(h * 0.1)}px`;
+  };
+
 
   // Mobile heights to replicate desktop effect in vertical layout
   const heightFor = (panel: PanelKey): string => {
@@ -79,19 +115,20 @@ export default function Landing() {
     return (
       <section
         ref={(el) => (sectionRef.current = el)}
-        className={`group relative h-screen overflow-hidden cursor-pointer flex-shrink-0`}
+        className={`group panel relative h-screen overflow-hidden cursor-pointer`}
+        data-panel={panel}
         style={{
-          // Desktop: usiamo anche width per garantire compatibilità con Safari/iOS
-          flexBasis: isDesktop ? basisFor(panel) : undefined,
-          width: isDesktop ? basisFor(panel) : undefined,
-          height: !isDesktop ? heightFor(panel) : undefined,
-          transition: isDesktop
-            ? 'width 2200ms cubic-bezier(0.22, 1, 0.36, 1)'
-            : 'height 2200ms cubic-bezier(0.22, 1, 0.36, 1)',
-          willChange: isDesktop ? ('width' as any) : ('height' as any),
+          // Desktop: layout/animazione gestiti in CSS tramite :hover (vedi index.css)
+          // Mobile: animiamo altezza in pixel (derivata dall’altezza del contenitore).
+          height: !isDesktop ? heightPxFor(panel) : undefined,
+          // Transizione solo per mobile
+          transition: !isDesktop ? 'height 2200ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+          willChange: !isDesktop ? ('height' as any) : undefined,
         }}
         onMouseEnter={() => {
-          if (isDesktop) setActive(panel);
+          // Desktop: espansione gestita via CSS :hover, non serve JS
+          if (isDesktop) return;
+          setActive(panel);
         }}
         onClick={(e) => {
           // Su desktop non è richiesto il click per espandere
@@ -108,12 +145,17 @@ export default function Landing() {
         <img
           src={img}
           alt={title}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform hover:scale-105 hover:brightness-110`}
+          className={`absolute -inset-[2px] w-full h-full object-cover transition-all duration-[1800ms] ease-in-out will-change-transform ${
+            isActive ? 'animate-ken-burns-slow filter saturate-100' : 'filter saturate-0'
+          }`}
+          style={{
+            objectPosition: 'center',
+          }}
         />
 
         {/* Overlay: leggermente scuro anche sulla sezione attiva per migliorare la leggibilità */}
         <div
-          className={`absolute inset-0 transition-opacity duration-[1800ms] ease-in-out ${
+          className={`absolute -inset-[2px] transition-opacity duration-[1800ms] ease-in-out ${
             isActive
               ? 'bg-gradient-to-t from-black/25 via-black/15 to-transparent'
               : 'bg-gradient-to-t from-black/70 via-black/50 to-transparent group-hover:from-black/40 group-hover:via-black/25 group-hover:to-transparent'
@@ -176,7 +218,8 @@ export default function Landing() {
 
       {/* Panels container */}
       <div
-        className="flex w-full h-full md:flex-row flex-col md:snap-none overflow-y-hidden overflow-x-hidden"
+        ref={containerRef}
+        className="panels flex w-full h-full md:flex-row flex-col md:snap-none overflow-y-hidden overflow-x-hidden"
         onMouseLeave={() => {
           // Su desktop, al termine dell'hover, torna alla vista iniziale
           if (isDesktop) setActive('collezione');
