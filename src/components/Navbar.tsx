@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
 import logoSweetyLab from '../assets/Logo_SweetyLab.png';
 
-function Navbar() {
+  function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBar, setShowBar] = useState(false); // nascosta al caricamento
+  const [scrolled, setScrolled] = useState(false);
+  const lastYRef = useRef(0);
   const location = useLocation();
 
   const navigation = [
@@ -15,80 +17,113 @@ function Navbar() {
     { name: 'Contatti', href: '/contatti' }
   ];
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
+
+  const isLanding = location.pathname === '/' || location.pathname === '/landing';
+
+  // Scroll behavior: hide on fast downward scroll, show on upward; add bg when scrolled
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      const delta = y - lastYRef.current;
+      // Manteniamo lo stato per eventuali usi futuri
+      setScrolled(y > 40);
+      // Richiesta: al load nascosta; quando si inizia a scrollare rapidamente, compare
+      if (y < 10) {
+        setShowBar(false);
+      } else if (Math.abs(delta) > 25) {
+        setShowBar(true);
+      }
+      lastYRef.current = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Blocca lo scroll del body quando il menu è aperto
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = original || '';
+    }
+    return () => {
+      document.body.style.overflow = original || '';
+    };
+  }, [isMenuOpen]);
 
   return (
-    <nav className="bg-cipria-50/80 backdrop-blur-md shadow-lg border-b border-cipria-200/40 fixed w-full top-0 z-50 transition-all duration-300">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo originale */}
-          <Link to="/" className="flex items-center group transition-all duration-300">
-            <img src={logoSweetyLab} alt="SweetyLab" className="h-8 md:h-10 w-auto transition-transform duration-300 group-hover:scale-105" />
-          </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-2">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 transform hover:scale-105 ${
-                  isActive(item.href)
-                    ? 'text-white bg-gradient-to-r from-cipria-500 to-cipria-600 shadow-lg shadow-cipria-500/25'
-                    : 'text-gray-700 hover:text-cipria-600 hover:bg-cipria-50/80 hover:shadow-md'
-                }`}
-              >
-                <span className="relative z-10">{item.name}</span>
-                {isActive(item.href) && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-cipria-500 to-cipria-600 rounded-full animate-pulse opacity-20"></div>
-                )}
+    <>
+      <nav
+        className={`fixed w-full top-0 z-50 transition-transform duration-300 ease-out ${showBar ? 'translate-y-0' : '-translate-y-full'}`}
+        aria-label="Main Navigation"
+      >
+        <div className="bg-cipria-50/80">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="flex justify-between items-center h-16 md:h-20">
+              {/* Logo monocromatico, piccolo */}
+              <Link to="/" className="flex items-center transition-all duration-300">
+                <img
+                  src={logoSweetyLab}
+                  alt="SweetyLab"
+                  className="h-12 md:h-16 w-auto filter grayscale contrast-90 brightness-95"
+                />
               </Link>
-            ))}
-          </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+              {/* Pulsante MENU (desktop + mobile) */}
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className="uppercase tracking-[0.25em] text-sm md:text-base text-[#1A1A1A] hover:opacity-70 transition-opacity"
+                aria-haspopup="dialog"
+                aria-expanded={isMenuOpen}
+                aria-controls="menu-overlay"
+              >
+                MENU
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Overlay full-screen MENU (render fuori dal nav per evitare clipping da transform) */}
+      {isMenuOpen && (
+        <div
+          id="menu-overlay"
+          className="fixed inset-0 z-[60] bg-[#F6E7E4] overlay-appear"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="absolute top-0 left-0 right-0 h-16 md:h-20 flex items-center justify-end px-6">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-700 hover:text-cipria-600 focus:outline-none focus:text-cipria-600 transition-all duration-300 hover:bg-cipria-50/80 rounded-full hover:scale-110"
+              onClick={() => setIsMenuOpen(false)}
+              className="uppercase tracking-[0.25em] text-sm text-[#1A1A1A] hover:opacity-70 transition-opacity"
+              aria-label="Chiudi menu"
             >
-              <div className="relative w-6 h-6">
-                <Menu className={`w-6 h-6 absolute transition-all duration-300 ${isMenuOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`} />
-                <X className={`w-6 h-6 absolute transition-all duration-300 ${isMenuOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'}`} />
-              </div>
+              CHIUDI
             </button>
           </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}>
-          <div className="px-2 pt-2 pb-3 space-y-2 bg-cipria-50/90 backdrop-blur-sm border-t border-cipria-100 rounded-b-2xl shadow-xl">
-            {navigation.map((item, index) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 transform hover:scale-105 ${
-                  isActive(item.href)
-                    ? 'text-white bg-gradient-to-r from-cipria-500 to-cipria-600 shadow-lg shadow-cipria-500/25'
-                    : 'text-gray-700 hover:text-cipria-600 hover:bg-cipria-50/80 hover:shadow-md'
-                }`}
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animation: isMenuOpen ? 'slideInFromTop 0.3s ease-out forwards' : 'none'
-                }}
-              >
-                {item.name}
-              </Link>
-            ))}
+          <div className="w-full h-full flex items-center justify-center text-center px-6">
+            <ul className="space-y-6 md:space-y-8">
+              {navigation.map((item, i) => (
+                <li key={item.name} className="menu-item-appear" style={{ animationDelay: `${i * 120}ms` }}>
+                  <Link
+                    to={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`text-[#1A1A1A] uppercase tracking-[0.25em] font-serif text-2xl md:text-3xl lg:text-4xl hover:underline decoration-[#1A1A1A] decoration-[0.5px] underline-offset-8 transition-colors ${
+                      isActive(item.href) ? 'opacity-60' : 'opacity-100'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 }
 

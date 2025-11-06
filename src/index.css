@@ -136,6 +136,36 @@
     animation: soft-bounce 1.5s ease-in-out infinite;
   }
 
+  /* Overlay MENU: fade + slide from top (delicato) */
+  @keyframes overlay-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .overlay-appear {
+    animation: overlay-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Voce menu: fade-in + slide 15–20px */
+  @keyframes item-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .menu-item-appear {
+    animation: item-enter 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   /* Tipografia H1 responsive con clamp: più controllata su mobile */
   .h1-responsive {
     font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
