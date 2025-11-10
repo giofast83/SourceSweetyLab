@@ -19,8 +19,11 @@ export default function Aurora() {
   const [isMobile, setIsMobile] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
 
-  const startTransition = (toIdx: number) => {
+  const [mobileDir, setMobileDir] = useState<'forward' | 'backward'>('forward');
+
+  const startTransition = (toIdx: number, dir: 'forward' | 'backward' = 'forward') => {
     if (transitioning || toIdx === currentIdx) return;
+    setMobileDir(dir);
     setNextIdx(toIdx);
     setTransitioning(true);
     // Modalità 50/50: dalla seconda foto in poi le due foto occupano 50% ciascuna; la nuova entra da destra nel pannello destro
@@ -36,8 +39,8 @@ export default function Aurora() {
   };
 
   // Navigazione semplice: avanti/indietro
-  const next = () => startTransition((currentIdx + 1) % images.length);
-  const prev = () => startTransition((currentIdx - 1 + images.length) % images.length);
+  const next = () => startTransition((currentIdx + 1) % images.length, 'forward');
+  const prev = () => startTransition((currentIdx - 1 + images.length) % images.length, 'backward');
 
   // Permetti frecce tastiera
   useEffect(() => {
@@ -77,6 +80,7 @@ export default function Aurora() {
     <>
       <div
         className="relative w-full h-screen bg-black overflow-hidden"
+        style={isMobile ? { height: '100dvh' as any } : undefined}
         {...(isMobile ? { onTouchStart: handleTouchStart, onTouchEnd: handleTouchEnd } : {})}
       >
         {isMobile ? (
@@ -91,10 +95,20 @@ export default function Aurora() {
             )}
             {transitioning && nextIdx !== null && (
               <>
-                <div className="aurora-mobile-pane aurora-mobile-out" style={{ left: '0' }}>
+                <div
+                  className={
+                    `aurora-mobile-pane ${mobileDir === 'forward' ? 'aurora-mobile-out' : 'aurora-mobile-out-right'}`
+                  }
+                  style={{ left: '0' }}
+                >
                   <img src={images[currentIdx]} alt="" className="w-full h-full object-cover" />
                 </div>
-                <div className="aurora-mobile-pane aurora-mobile-in" style={{ left: '0' }}>
+                <div
+                  className={
+                    `aurora-mobile-pane ${mobileDir === 'forward' ? 'aurora-mobile-in' : 'aurora-mobile-in-left'}`
+                  }
+                  style={{ left: '0' }}
+                >
                   <img src={images[nextIdx]} alt="" className="w-full h-full object-cover" />
                 </div>
               </>
@@ -218,7 +232,7 @@ export default function Aurora() {
             Ogni immagine cattura texture, luce e movimento per valorizzare la qualità dei materiali e il design.
           </p>
         </div>
-      </section>
+  </section>
     </>
   );
 }
