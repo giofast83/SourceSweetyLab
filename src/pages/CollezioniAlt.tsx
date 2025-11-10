@@ -10,7 +10,7 @@ import heroImage from '../assets/creazione-08-1024.jpg';
 export default function CollezioniAlt() {
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-paper pb-20 md:pb-24">
       <HeroMinimal
         image={heroImage}
         title="Collezioni"
@@ -18,6 +18,7 @@ export default function CollezioniAlt() {
         microcopy=""
         ctaHref="/collezione"
         ctaLabel="Esplora la Collezione"
+        showCta={false}
         align="left"
       />
 

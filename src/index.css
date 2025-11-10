@@ -15,6 +15,11 @@
   background-blend-mode: multiply, normal;
 }
 
+/* Easing morbido condiviso */
+:root {
+  --soft-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 @layer base {
   body {
     font-family: 'Inter', 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
@@ -27,6 +32,48 @@
 }
 
 @layer utilities {
+  /* Separatore netto tra sezioni: linea orizzontale sottile cipria */
+  .section-sep {
+    position: relative;
+  }
+  .section-sep::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #E8BFC7; /* cipria coerente con il brand */
+  }
+  /* Rivelazioni discrete su scroll: solo opacità e lieve traslazione */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 700ms var(--soft-ease), transform 700ms var(--soft-ease);
+    will-change: opacity, transform;
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 700ms var(--soft-ease), transform 700ms var(--soft-ease);
+    will-change: opacity, transform;
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(12px);
+    transition: opacity 700ms var(--soft-ease), transform 700ms var(--soft-ease);
+    will-change: opacity, transform;
+  }
+  .reveal-down {
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 700ms var(--soft-ease), transform 700ms var(--soft-ease);
+    will-change: opacity, transform;
+  }
+  .in-view {
+    opacity: 1;
+    transform: none;
+  }
   /* Fade-in del logo top-center */
   @keyframes logo-fade-in {
     0% {

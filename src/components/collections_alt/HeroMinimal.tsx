@@ -10,9 +10,10 @@ type HeroMinimalProps = {
   ctaHref?: string;
   ctaLabel?: string;
   align?: 'center' | 'left';
+  showCta?: boolean;
 };
 
-export default function HeroMinimal({ image, title = 'Collezioni', subtitle = 'Storie sartoriali in tiratura limitata', microcopy = 'Capi artigianali creati nel nostro laboratorio.', ctaHref = '/collezione', ctaLabel = 'Esplora la Collezione', align = 'left' }: HeroMinimalProps) {
+export default function HeroMinimal({ image, title = 'Collezioni', subtitle = 'Storie sartoriali in tiratura limitata', microcopy = 'Capi artigianali creati nel nostro laboratorio.', ctaHref = '/collezione', ctaLabel = 'Esplora la Collezione', align = 'left', showCta = true }: HeroMinimalProps) {
   const { ref, inView } = useInView<HTMLDivElement>();
   const [offset, setOffset] = useState(0);
 
@@ -67,19 +68,21 @@ export default function HeroMinimal({ image, title = 'Collezioni', subtitle = 'S
               {microcopy}
             </p>
           )}
-          <div className={`mt-7 ${align === 'left' ? '' : 'flex justify-center'}`}>
-            <Link
-              to={ctaHref}
-              className="inline-flex items-center gap-2 justify-center px-5 py-2.5 border border-white/70 text-white bg-transparent hover:bg-[#F3C9CF]/15 hover:border-white rounded-none text-sm tracking-wide transition-colors duration-200"
-              aria-label={ctaLabel}
-            >
-              {ctaLabel}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                <path d="M5 12h12" />
-                <path d="M13 6l6 6-6 6" />
-              </svg>
-            </Link>
-          </div>
+          {showCta && (
+            <div className={`mt-7 ${align === 'left' ? '' : 'flex justify-center'}`}>
+              <Link
+                to={ctaHref}
+                className="inline-flex items-center gap-2 justify-center px-5 py-2.5 border border-white/70 text-white bg-transparent hover:bg-[#F3C9CF]/15 hover:border-white rounded-none text-sm tracking-wide transition-colors duration-200"
+                aria-label={ctaLabel}
+              >
+                {ctaLabel}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <path d="M5 12h12" />
+                  <path d="M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </section>

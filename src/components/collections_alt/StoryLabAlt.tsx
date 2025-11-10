@@ -4,7 +4,7 @@ import { useInView } from '../../utils/useInView';
 export default function StoryLabAlt() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
   return (
-    <section ref={ref} className="pt-8 md:pt-10 pb-16 md:pb-20">
+    <section ref={ref} className="pt-8 md:pt-10 pb-0 mb-20">
       <div className="relative w-full group">
         <div className={`relative w-full h-[48vh] md:h-[56vh] transition-opacity duration-700 ${inView ? 'opacity-100' : 'opacity-0'}`}>
           <img

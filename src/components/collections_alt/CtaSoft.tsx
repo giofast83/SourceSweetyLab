@@ -4,7 +4,7 @@ import { useInView } from '../../utils/useInView';
 export default function CtaSoft() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
   return (
-    <section ref={ref} className="py-20">
+    <section ref={ref} className="py-0">
       <div className={`mx-auto max-w-3xl px-6 text-center transition-opacity duration-700 ${inView ? 'opacity-100' : 'opacity-0'}`}>
         <p className="font-serif text-xl md:text-2xl text-[#6B4A4E]">
           Vuoi provare un capo o scoprire le prossime collezioni?

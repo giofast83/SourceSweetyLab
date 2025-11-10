@@ -1,0 +1,112 @@
+/* Aurora fullscreen slideshow: semplice slide senza resize */
+
+.aurora-right-img {
+  position: absolute;
+  inset: 0;
+  transform: translateX(110%);
+}
+
+@keyframes auroraSlideIn {
+  from {
+    transform: translateX(110%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.aurora-right-img.enter {
+  animation: auroraSlideIn 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+/* Pannelli 50/50 che scorrono assieme verso sinistra */
+.aurora-pane {
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.aurora-shift-left {
+  animation: auroraShiftLeft 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes auroraShiftLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50vw); }
+}
+
+/* Primo scorrimento: la prima foto si riduce da 100vw a 50vw */
+.aurora-first-left-shrink {
+  animation: auroraFirstLeftShrink 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+  will-change: width;
+}
+
+@keyframes auroraFirstLeftShrink {
+  from { width: 100vw; }
+  to { width: 50vw; }
+}
+
+/* Barra miniature */
+.aurora-thumbs {
+  position: absolute;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.aurora-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.4);
+  outline: none;
+  cursor: pointer;
+}
+
+.aurora-thumb:hover { filter: brightness(1.1); }
+.aurora-thumb:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Mobile: aumenta leggermente il margine dal bordo inferiore per evitare sovrapposizione con UI del browser */
+@media (max-width: 767px) {
+  .aurora-thumbs {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Mobile: slideshow fullscreen, slide da destra (next) a sinistra */
+.aurora-mobile-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.aurora-mobile-in {
+  animation: auroraMobileSlideIn 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+.aurora-mobile-out {
+  animation: auroraMobileSlideOut 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes auroraMobileSlideIn {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(0); }
+}
+
+@keyframes auroraMobileSlideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100vw); }
+}
