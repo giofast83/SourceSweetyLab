@@ -30,7 +30,7 @@ export default function HeroMinimal({ image, title = 'Collezioni', subtitle = 'S
   return (
     <section
       ref={ref}
-      className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative h-screen md:min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Wrapper esterno: gestisce solo il parallax verticale */}
       <div
