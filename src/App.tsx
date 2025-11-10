@@ -8,6 +8,7 @@ import Servizi from './pages/Servizi';
 import PortfolioPage from './pages/PortfolioPage';
 import Contatti from './pages/Contatti';
 import Landing from './pages/Landing.tsx';
+import CollezioniAlt from './pages/CollezioniAlt.tsx';
 import CollectionPage from './pages/CollectionPage.tsx';
 import Essenza from './pages/collections/Essenza.tsx';
 import Luna from './pages/collections/Luna.tsx';
@@ -28,6 +29,8 @@ function AppContent() {
           <Route path="/" element={<Landing />} />
           {/* La Home rimane raggiungibile su /home */}
           <Route path="/home" element={<Home />} />
+          {/* Variante alternativa per A/B testing */}
+          <Route path="/collezioni-alt" element={<CollezioniAlt />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/servizi" element={<Servizi />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
