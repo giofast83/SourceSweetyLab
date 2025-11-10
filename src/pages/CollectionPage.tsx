@@ -6,6 +6,7 @@ import heroImg from '../assets/creazione-08-1024.jpg';
 import essenzaImg from '../assets/creazione-01-1024.jpg';
 import lunaImg from '../assets/creazione-02-1024.jpg';
 import radiciImg from '../assets/creazione-03-1024.jpg';
+import auroraImg from '../assets/preparativi-sposa-1024.jpg';
 
 export default function CollectionPage() {
   return (
@@ -59,7 +60,13 @@ export default function CollectionPage() {
         image={radiciImg}
         href="/collezione/radici"
       />
-      {/* Pannello Aurora rimosso */}
+      {/* Aurora reintegrata tra le collezioni */}
+      <CollectionPanel
+        title="Aurora"
+        subtitle="Quiet luxury, artigianalità e luce"
+        image={auroraImg}
+        href="/collezione/aurora"
+      />
     </div>
   );
 }

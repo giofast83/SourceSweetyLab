@@ -86,11 +86,13 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  /* Usa 100dvh per evitare salti di altezza su mobile (Safari/Chrome) */
+  height: 100dvh;
   pointer-events: none;
   will-change: transform;
   backface-visibility: hidden;
   contain: paint;
+  overflow: hidden;
 }
 
 .aurora-mobile-in {
@@ -132,6 +134,46 @@
 @keyframes auroraMobileSlideOutToRight {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(100%, 0, 0); }
+}
+
+/* Fade-in delicato per sezioni contenuto */
+.sl-fade-section {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  will-change: opacity, transform;
+}
+.sl-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Bottoni blush pink professionali (quiet luxury) */
+:root {
+  --sl-blush: #e9c7cf; /* rosa cipria */
+  --sl-blush-hover: #e2bcc6;
+  --sl-warm-white: #faf7f5; /* bianco caldo */
+}
+
+.sl-btn-blush {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background: var(--sl-blush);
+  color: #1f2937; /* neutral-800 */
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-decoration: none;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.sl-btn-blush:hover {
+  background: var(--sl-blush-hover);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.sl-btn-blush:active {
+  transform: translateY(1px);
 }
 
 /* Controlli mobile: frecce dx/sx per indicare slideshow */
