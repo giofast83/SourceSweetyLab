@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './aurora.css';
 
 // Immagini placeholder per la collezione Aurora (sostituibili in seguito)
@@ -17,6 +17,7 @@ export default function Aurora() {
   const [nextIdx, setNextIdx] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const touchStartXRef = useRef<number | null>(null);
 
   const startTransition = (toIdx: number) => {
     if (transitioning || toIdx === currentIdx) return;
@@ -56,9 +57,28 @@ export default function Aurora() {
     return () => window.removeEventListener('resize', detect);
   }, []);
 
+  // Gesture swipe su mobile: trascina a sinistra/destra per cambiare slide
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartXRef.current = e.touches[0]?.clientX ?? null;
+  };
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartXRef.current == null) return;
+    const endX = e.changedTouches[0]?.clientX ?? touchStartXRef.current;
+    const dx = endX - touchStartXRef.current;
+    const threshold = 40; // px
+    if (Math.abs(dx) > threshold && !transitioning) {
+      if (dx < 0) next(); // swipe left -> next
+      else prev(); // swipe right -> prev
+    }
+    touchStartXRef.current = null;
+  };
+
   return (
     <>
-      <div className="relative w-full h-screen bg-black overflow-hidden">
+      <div
+        className="relative w-full h-screen bg-black overflow-hidden"
+        {...(isMobile ? { onTouchStart: handleTouchStart, onTouchEnd: handleTouchEnd } : {})}
+      >
         {isMobile ? (
           // Mobile: ogni foto a schermo intero, slide da destra verso sinistra
           <>
@@ -155,23 +175,38 @@ export default function Aurora() {
           </>
         )}
 
-        {/* Miniature al posto dei pulsanti: mostrano le foto successive */}
-        <div className="aurora-thumbs z-30">
-          {Array.from({ length: Math.min(4, images.length - 1) }).map((_, i) => {
-            const idx = (currentIdx + 1 + i) % images.length;
-            return (
-              <button
+        {/* Controlli: su desktop miniature, su mobile frecce dx/sx */}
+        {!isMobile && (
+          <div className="aurora-thumbs z-30">
+            {Array.from({ length: Math.min(4, images.length - 1) }).map((_, i) => {
+              const idx = (currentIdx + 1 + i) % images.length;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => startTransition(idx)}
+                  disabled={transitioning || idx === currentIdx}
+                  className="aurora-thumb"
+                >
+                  <img src={images[idx]} alt="" className="w-full h-full object-cover" />
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {isMobile && (
+          <div className="aurora-mobile-indicators z-30" aria-hidden={false}>
+            {images.map((_, idx) => (
+              <span
                 key={idx}
-                type="button"
-                onClick={() => startTransition(idx)}
-                disabled={transitioning || idx === currentIdx}
-                className="aurora-thumb"
-              >
-                <img src={images[idx]} alt="" className="w-full h-full object-cover" />
-              </button>
-            );
-          })}
-        </div>
+                className={
+                  'aurora-indicator-segment' + (idx === currentIdx ? ' aurora-indicator-active' : '')
+                }
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Sezione info collezione sotto l'hero, centrata – usa font e stili del sito */}
