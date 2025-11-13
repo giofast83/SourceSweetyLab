@@ -101,11 +101,11 @@ export default function Landing() {
               isHoverDevice ? () => setActive(p.key) : undefined
             }
             onClick={() => handleClick(p.key)}
-            className={`group relative h-auto md:h-full ${basisFor(p.key)} overflow-hidden transition-all duration-1000 ease-in-out transform-gpu focus:outline-none hover:brightness-105 ${p.key === 'upcycling' ? 'origin-right md:hover:scale-100' : 'hover:scale-[1.01]'}`}
+            className={`group relative h-auto md:h-full ${basisFor(p.key)} overflow-hidden transition-all duration-1000 ease-in-out transform-gpu focus:outline-none hover:brightness-105 hover:scale-[1.01]`}
             style={{
               backgroundImage: `url(${p.image})`,
               backgroundSize: 'cover',
-              backgroundPosition: p.key === 'upcycling' ? 'right center' : 'center',
+              backgroundPosition: 'center',
               willChange: 'flex-basis, opacity, transform, filter',
             }}
           >

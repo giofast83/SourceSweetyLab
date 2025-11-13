@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './aurora.css';
-// Nuove sezioni riutilizzabili per la pagina Aurora
-import ProductDetailBlock from '../../components/collection/ProductDetailBlock';
-import UniqueCustomSection from '../../components/collection/UniqueCustomSection';
-import PhilosophyValuesSection from '../../components/collection/PhilosophyValuesSection';
-import AuroraCTA from '../../components/collection/AuroraCTA';
+// Sezione introduttiva titolo + descrizione
+import CollectionIntro from '../../components/collection/CollectionIntro';
+import OtherCollectionsGrid from '../../components/collection/OtherCollectionsGrid';
+// Rimosse le sezioni sottostanti l'hero: lasciamo solo titolo e descrizione della collezione
 
 // Immagini placeholder per la collezione Aurora (sostituibili in seguito)
 import img1 from '../../assets/creazione-01-1024.jpg';
@@ -14,8 +13,7 @@ import img4 from '../../assets/creazione-04-1024.jpg';
 import img5 from '../../assets/creazione-05-1024.jpg';
 import img6 from '../../assets/creazione-06-1024.jpg';
 // Asset aggiuntivi per sezioni editoriali
-import dettagliArtigianaliImg from '../../assets/dettagli-artigianali-1024.jpg';
-import atelierImg from '../../assets/atelier-in-azione-1024.jpg';
+// (Nessun asset aggiuntivo necessario sotto l'hero)
 
 export default function Aurora() {
   const images = [img1, img2, img3, img4, img5, img6];
@@ -231,58 +229,67 @@ export default function Aurora() {
         )}
       </div>
 
-      {/* Intro collezione – tono minimale, serif morbidi e aria bianca */}
-      <section className="w-full bg-paper text-neutral-900 py-12 md:py-16">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h1 className="h1-responsive font-serif">Collezione Aurora</h1>
-          <p className="mt-4 text-base md:text-lg text-neutral-700">
-            Quiet luxury, artigianalità e attenzione al dettaglio. Aurora nasce dall’incontro tra tradizione e ricerca contemporanea.
-          </p>
+      {/* Intro collezione – titolo e descrizione, subito sotto l'hero */}
+      <CollectionIntro
+        title="Aurora"
+        paragraphs={[
+          'Aurora nasce dall’incontro tra luce e materia: tonalità morbide e riflessi che esaltano la silhouette.',
+          'Materiali selezionati e fibre pregiate, lavorati con cura nel nostro atelier.',
+          'Un’eleganza quieta, artigianale, interamente Made in Italy.'
+        ]}
+        theme="contact"
+        align="left"
+        background="contactCard"
+        paragraphWeight="normal"
+        paragraphFont="sans"
+        titleDivider="contact"
+        sideImageSrc={img6}
+        sideImageAlt="Bozza del disegno dell’abito – collezione Aurora"
+        sideImageCaption="Bozza del disegno realizzata durante la fase di creazione in atelier"
+        fadeIn
+        maxWidth="md"
+      />
+
+      {/* CTA – prenota consulenza su misura (centrato, bottone rosa cipria) */}
+      <section aria-label="CTA Prenota consulenza" className="py-12 md:py-16">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h3 className="font-serif text-2xl md:text-3xl text-gray-800">
+            Vuoi indossare un capo della collezione Aurora?
+          </h3>
+          <div className="mt-6">
+            <a href="/contatti" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-cipria-600 hover:bg-cipria-600 text-base font-medium text-white transition-colors duration-300">
+              Prenota una consulenza
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* 1) Dettaglio Capi e Storia del Prodotto */}
-      <ProductDetailBlock
-        title="Abito Aurora – Dettaglio e Storia"
-        mainImage={img1}
-        description="Un capo pensato per accarezzare le linee, con una silhouette morbida e una mano leggera. Ogni dettaglio è studiato per accompagnare il movimento con eleganza."
-        ispirazione="I colori dell’alba e le trasparenze della luce."
-        materiali="Tessuti pregiati con texture setose e trame sottili."
-        lavorazione="Cuciture manuali, rifiniture artigianali, attenzione agli interni."
-        vestibilita="Comfort raffinato: si adatta al corpo con naturalezza."
-        galleryImages={[img2, img3, img4]}
-      />
-
-      <ProductDetailBlock
-        title="Gonna Drapé – Dettagli & Lavorazione"
-        mainImage={img5}
-        description="Drappeggi morbidi che disegnano il movimento. Un equilibrio tra struttura e fluidità."
-        ispirazione="Linee organiche e ritmo naturale."
-        materiali="Fibre naturali con finitura semi-opaca."
-        lavorazione="Taglio sartoriale e drappeggio a mano."
-        vestibilita="Versatile e confortevole, pensata per diverse corporature."
-        galleryImages={[img6, img1, img2]}
-      />
-
-      {/* 2) Pezzi Unici e Su Misura – griglia editoriale con claim */}
-      <UniqueCustomSection
-        images={[img2, img3, img4, dettagliArtigianaliImg]}
-        claim="Dal figurino al capo finito"
-      />
-
-      {/* 3) Filosofia e Valori della Collezione – split su desktop, verticale su mobile */}
-      <PhilosophyValuesSection
-        image={atelierImg}
-        values={["Inclusività", "Sostenibilità", "Made in Italy", "Artigianalità"]}
-        quotes={[
-          "Crediamo nella bellezza che nasce dalla cura.",
-          "Ogni dettaglio racconta una storia: la nostra.",
+      {/* Griglia delle altre collezioni (statico, senza slider né cursori) */}
+      <OtherCollectionsGrid
+        title="Altre collezioni"
+        align="left"
+        background="contactCard"
+        items={[
+          {
+            title: 'Essenza',
+            description: 'Linee pulite, minimalismo femminile',
+            image: img1,
+            href: '/collezione/essenza',
+          },
+          {
+            title: 'Luna',
+            description: 'Eleganza morbida, drappeggi e volumi',
+            image: img2,
+            href: '/collezione/luna',
+          },
+          {
+            title: 'Radici',
+            description: 'Texture, matericità e natura',
+            image: img3,
+            href: '/collezione/radici',
+          },
         ]}
-        layout="split"
       />
-
-      {/* 4) CTA finale – tre opzioni */}
-      <AuroraCTA />
     </main>
   );
 }

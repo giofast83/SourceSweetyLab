@@ -29,13 +29,13 @@ function AppContent() {
           <Route path="/" element={<Landing />} />
           {/* La Home rimane raggiungibile su /home */}
           <Route path="/home" element={<Home />} />
-          {/* Variante alternativa per A/B testing */}
-          <Route path="/collezioni-alt" element={<CollezioniAlt />} />
+          {/* Variante alternativa per A/B testing (ora invertita) */}
+          <Route path="/collezioni-alt" element={<CollectionPage />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/servizi" element={<Servizi />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/contatti" element={<Contatti />} />
-          <Route path="/collezione" element={<CollectionPage />} />
+          <Route path="/collezione" element={<CollezioniAlt />} />
           <Route path="/collezione/essenza" element={<Essenza />} />
           <Route path="/collezione/luna" element={<Luna />} />
           <Route path="/collezione/radici" element={<Radici />} />

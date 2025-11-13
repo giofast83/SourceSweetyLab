@@ -1,10 +1,9 @@
 import { Instagram, Facebook } from 'lucide-react';
 import logoSweetyLab from '../assets/Logo_SweetyLab.png';
-import logoRegione from '../assets/LogoRegione.png';
 
 function Footer() {
   return (
-    <footer className="bg-cipria-50 text-neutral-800 pt-20 pb-0">
+    <footer className="bg-cipria-50 text-neutral-800 py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
@@ -57,13 +56,6 @@ function Footer() {
           <p className="text-neutral-600 text-sm">
             © 2025 SweetyLab – Tutti i diritti riservati
           </p>
-          {/* Logo Regione posizionato tra copyright e link privacy */}
-          <img
-            src={logoRegione}
-            alt="Loghi della Regione"
-            className="h-8 md:h-10 w-auto object-contain"
-            loading="lazy"
-          />
           <div className="flex gap-6 text-sm">
             <a href="#" className="text-neutral-600 hover:text-cipria-600 transition-colors">
               Privacy Policy
@@ -74,7 +66,6 @@ function Footer() {
           </div>
         </div>
       </div>
-      {/* Logo spostato nella riga finale del footer; rimosso il blocco separato in basso */}
     </footer>
   );
 }
