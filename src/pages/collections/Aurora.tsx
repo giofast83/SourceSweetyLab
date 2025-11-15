@@ -240,8 +240,8 @@ export default function Aurora() {
         theme="contact"
         align="left"
         background="contactCard"
-        paragraphWeight="normal"
-        paragraphFont="sans"
+        paragraphWeight="light"
+        paragraphFont="work"
         titleDivider="contact"
         sideImageSrc={img6}
         sideImageAlt="Bozza del disegno dell’abito – collezione Aurora"
@@ -257,7 +257,7 @@ export default function Aurora() {
             Vuoi indossare un capo della collezione Aurora?
           </h3>
           <div className="mt-6">
-            <a href="/contatti" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-cipria-600 hover:bg-cipria-600 text-base font-medium text-white transition-colors duration-300">
+            <a href="/contatti" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-cipria-600 hover:bg-cipria-600 text-base font-medium text-white transition-all duration-200 ease-out transform hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cipria-600 focus-visible:ring-offset-2">
               Prenota una consulenza
             </a>
           </div>

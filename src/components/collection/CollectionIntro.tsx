@@ -13,7 +13,7 @@ export type CollectionIntroProps = {
   maxWidth?: 'sm' | 'md' | 'lg'; // controlla la larghezza del testo
   background?: 'none' | 'cipria' | 'contactCard'; // consente di impostare un colore di fondo (es. uguale al footer o come la card contatti)
   paragraphWeight?: 'normal' | 'light'; // peso del testo descrittivo (più fino)
-  paragraphFont?: 'sans' | 'serif'; // famiglia tipografica del paragrafo
+  paragraphFont?: 'sans' | 'serif' | 'work'; // famiglia tipografica del paragrafo
   titleDivider?: 'none' | 'soft' | 'contact'; // riga divisoria sotto il titolo
   sideImageSrc?: string; // immagine laterale (a destra) opzionale
   sideImageAlt?: string; // descrizione per accessibilità
@@ -56,7 +56,7 @@ export default function CollectionIntro(props: CollectionIntroProps) {
       ? 'bg-gradient-to-br from-pink-50 to-amber-50'
       : '';
   const weightClass = paragraphWeight === 'light' ? 'font-light' : 'font-normal';
-  const fontClass = paragraphFont === 'serif' ? 'font-serif' : 'font-sans';
+  const fontClass = paragraphFont === 'serif' ? 'font-serif' : paragraphFont === 'work' ? 'font-work' : 'font-sans';
   const dividerColor = theme === 'cipria' || theme === 'contact' ? 'bg-[#E8BFC7]' : 'bg-neutral-300';
   const dividerAlign = align === 'center' ? 'mx-auto' : '';
 
@@ -74,13 +74,13 @@ export default function CollectionIntro(props: CollectionIntroProps) {
               <div className={`mt-3 mb-2 h-[1px] w-20 md:w-24 ${dividerColor} ${dividerAlign}`} aria-hidden="true"></div>
             )}
       {titleDivider === 'contact' && (
-        <div className={`mt-3 h-0.5 w-24 bg-cipria-600 ${dividerAlign} mb-8`} aria-hidden="true"></div>
+        <div className={`mt-3 h-px w-24 bg-cipria-600 ${dividerAlign} mb-8`} aria-hidden="true"></div>
       )}
 
             {/* Descrizione – suddivisa in brevi paragrafi leggibili */}
             <div className={`mt-4 ${widthClass} ${textColor}`}>
               {paragraphs.map((p, idx) => (
-                <p key={idx} className={`text-base md:text-lg leading-relaxed ${fontClass} ${weightClass} ${idx > 0 ? 'mt-3' : ''}`}>
+                <p key={idx} className={`text-[18px] leading-relaxed ${fontClass} ${weightClass} ${idx > 0 ? 'mt-3' : ''}`}>
                   {p}
                 </p>
               ))}

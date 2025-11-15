@@ -112,19 +112,15 @@ export default function Collezione() {
         </div>
       </section>
 
-      {/* CTA FINALE (più ampia e meglio allineata) */}
-      <section className="px-6 md:px-8 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-            <h3 className="text-2xl md:text-3xl font-serif text-neutral-900 text-center md:text-left leading-snug">
-              Vuoi provare i capi in atelier?
-            </h3>
-            <a
-              href="/contatti"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-cipria-600 hover:bg-cipria-700 text-white text-base md:text-lg px-7 md:px-8 py-3.5 md:py-4 shadow-sm hover:shadow-md transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cipria-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            >
-              Prenota un appuntamento
-              <span aria-hidden>→</span>
+      {/* CTA finale – stile identico a CTA Aurora */}
+      <section aria-label="CTA Prenota consulenza" className="py-12 md:py-16">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h3 className="font-serif text-2xl md:text-3xl text-gray-800">
+            Vuoi indossare un capo della nostra collezione?
+          </h3>
+          <div className="mt-6">
+            <a href="/contatti" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-cipria-600 hover:bg-cipria-600 text-base font-medium text-white transition-colors duration-300">
+              Prenota una consulenza
             </a>
           </div>
         </div>
