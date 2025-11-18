@@ -258,5 +258,23 @@
       0 3px 12px rgba(0, 0, 0, 0.5);
   }
 
+  /* Fade-up con blur per titoli/sottotitoli, riutilizzabile ovunque (coerente con Aurora) */
+  @keyframes fadeUpBlurIn {
+    from { opacity: 0; transform: translateY(12px); filter: blur(6px); }
+    to { opacity: 1; transform: translateY(0px); filter: blur(0px); }
+  }
+  .sl-fade-up-blur-title {
+    animation: fadeUpBlurIn 800ms var(--soft-ease) both;
+    animation-delay: 120ms;
+  }
+  .sl-fade-up-blur-subtitle {
+    animation: fadeUpBlurIn 900ms var(--soft-ease) both;
+    animation-delay: 360ms;
+  }
+  .sl-fade-up-blur-cta {
+    animation: fadeUpBlurIn 950ms var(--soft-ease) both;
+    animation-delay: 520ms;
+  }
+
   /* (rimosso) Layout pannelli specifico della Landing */
 }

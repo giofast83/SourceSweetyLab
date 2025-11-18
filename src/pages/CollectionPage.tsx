@@ -95,10 +95,10 @@ export default function CollectionPage() {
               <Link
                 key={c.title}
                 to={c.href}
-                className="group block rounded-2xl overflow-hidden bg-white border border-neutral-200 shadow-sm hover:shadow-md transition-all"
+                className="group block overflow-hidden bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-md transition-all rounded-[18px] md:rounded-[20px] lg:rounded-[22px]"
                 aria-label={`Scopri la collezione ${c.title}`}
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-t-[18px] md:rounded-t-[20px] lg:rounded-t-[22px]">
                   <img
                     src={c.image}
                     alt={`Collezione ${c.title}`}
@@ -155,3 +155,4 @@ export default function CollectionPage() {
     </div>
   );
 }
+

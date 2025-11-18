@@ -14,6 +14,7 @@ import logoSweetyLab from '../assets/Logo_SweetyLab.png';
     { name: 'Collezione', href: '/collezione' },
     { name: 'Su Misura', href: '/servizi' },
     { name: 'Upcycling', href: '/portfolio' },
+    { name: 'Chi Siamo', href: '/chi-siamo' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useInView } from '../../utils/useInView';
 import imgA from '../../assets/creazione-01-1024.jpg';
 import imgB from '../../assets/creazione-03-1024.jpg';
 import imgC from '../../assets/creazione-05-1024.jpg';
@@ -24,11 +25,16 @@ const items: Item[] = [
   { images: [imgF, imgE, imgD, imgC], name: 'Texture Pregiate', badge: 'Responsabile', price: 'Su richiesta' },
 ];
 
-function ItemCard({ item }: { item: Item }) {
+function ItemCard({ item, index }: { item: Item, index: number }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const activeImage = item.images[activeIdx] ?? item.images[0];
+  const { ref, inView } = useInView<HTMLDivElement>();
   return (
-    <article className="group border border-gray-100 bg-transparent shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow">
+    <article
+      ref={ref}
+      className={`group overflow-hidden bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.10)] transition-shadow rounded-[18px] md:rounded-[20px] lg:rounded-[22px] reveal-up ${inView ? 'in-view' : ''}`}
+      style={{ transitionDelay: `${index * 90}ms` }}
+    >
       <Link to={item.href ?? '/collezione'} className="relative aspect-[16/9] w-full overflow-hidden bg-[#f6f1f2] block">
         <img
           src={activeImage}
@@ -57,7 +63,7 @@ function ItemCard({ item }: { item: Item }) {
         </div>
       </Link>
       {/* Thumbnails sotto la foto: clic per cambiare l'immagine principale */}
-      <div className="px-3 md:px-4 py-1 flex items-center gap-1 border-t border-gray-100 bg-white/40">
+      <div className="px-3 md:px-4 py-1 flex items-center gap-1 border-t border-gray-100 bg-white/60">
         {item.images.slice(0, 4).map((thumb, i) => (
           <button
             key={i}
@@ -80,7 +86,7 @@ export default function ItemsGridAlt() {
         <div className="w-full px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {items.slice(0, 4).map((it, idx) => (
-            <ItemCard key={idx} item={it} />
+            <ItemCard key={idx} item={it} index={idx} />
           ))}
         </div>
       </div>
