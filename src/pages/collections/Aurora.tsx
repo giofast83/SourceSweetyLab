@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './aurora.css';
 // Sezione introduttiva titolo + descrizione
 import CollectionIntro from '../../components/collection/CollectionIntro';
-import OtherCollectionsGrid from '../../components/collection/OtherCollectionsGrid';
+import OtherCollectionsCarousel from '../../components/collection/OtherCollectionsCarousel';
 // Rimosse le sezioni sottostanti l'hero: lasciamo solo titolo e descrizione della collezione
 
 // Immagini placeholder per la collezione Aurora (sostituibili in seguito)
@@ -230,6 +230,7 @@ export default function Aurora() {
       </div>
 
       {/* Intro collezione – titolo e descrizione, subito sotto l'hero */}
+      <div className="pt-6 md:pt-8 bg-gradient-to-br from-pink-50 to-amber-50">
       <CollectionIntro
         title="Aurora"
         paragraphs={[
@@ -249,9 +250,23 @@ export default function Aurora() {
         fadeIn
         maxWidth="md"
       />
+      </div>
 
-      {/* CTA – prenota consulenza su misura (centrato, bottone rosa cipria) */}
-      <section aria-label="CTA Prenota consulenza" className="py-12 md:py-16">
+
+      {/* Altre collezioni – slideshow rettangolare centrato con gradiente cipria e label animata */}
+      <OtherCollectionsCarousel
+        title="Altre collezioni"
+        items={[
+          { title: 'Essenza', subtitle: 'Linee pulite, minimalismo femminile', image: img1, href: '/collezione/essenza' },
+          { title: 'Luna', subtitle: 'Eleganza morbida, drappeggi e volumi', image: img2, href: '/collezione/luna' },
+          { title: 'Radici', subtitle: 'Texture, matericità e natura', image: img3, href: '/collezione/radici' },
+        ]}
+        autoPlay
+        intervalMs={5000}
+      />
+
+      {/* CTA – spostato sotto lo slideshow "Altre collezioni" */}
+      <section aria-label="CTA Prenota consulenza" className="pt-12 md:pt-16 pb-16 md:pb-24">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h3 className="font-serif text-2xl md:text-3xl text-gray-800">
             Vuoi indossare un capo della collezione Aurora?
@@ -263,33 +278,6 @@ export default function Aurora() {
           </div>
         </div>
       </section>
-
-      {/* Griglia delle altre collezioni (statico, senza slider né cursori) */}
-      <OtherCollectionsGrid
-        title="Altre collezioni"
-        align="left"
-        background="contactCard"
-        items={[
-          {
-            title: 'Essenza',
-            description: 'Linee pulite, minimalismo femminile',
-            image: img1,
-            href: '/collezione/essenza',
-          },
-          {
-            title: 'Luna',
-            description: 'Eleganza morbida, drappeggi e volumi',
-            image: img2,
-            href: '/collezione/luna',
-          },
-          {
-            title: 'Radici',
-            description: 'Texture, matericità e natura',
-            image: img3,
-            href: '/collezione/radici',
-          },
-        ]}
-      />
     </main>
   );
 }

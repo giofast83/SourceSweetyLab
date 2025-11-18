@@ -89,7 +89,8 @@ export default function CollectionIntro(props: CollectionIntroProps) {
 
           {sideImageSrc && (
             <div className="mt-6 md:mt-0">
-              <div className="w-full overflow-hidden rounded-lg shadow-sm border border-neutral-200/40">
+              {/* Angoli arrotondati come lo slideshow: 20px su base, 22px su desktop */}
+              <div className="w-full overflow-hidden rounded-[20px] md:rounded-[22px] shadow-sm border border-neutral-200/40">
                 <img
                   src={sideImageSrc}
                   alt={sideImageAlt || ''}
